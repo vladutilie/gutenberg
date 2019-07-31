@@ -352,6 +352,7 @@ class RichTextWrapper extends Component {
 			undo,
 			placeholder,
 			keepPlaceholderOnFocus,
+			hasMultiSelection,
 			// eslint-disable-next-line no-unused-vars
 			allowedFormats,
 			withoutInteractiveFormatting,
@@ -420,6 +421,7 @@ class RichTextWrapper extends Component {
 				__unstableMarkAutomaticChange={ markAutomaticChange }
 				__unstableDidAutomaticChange={ didAutomaticChange }
 				__unstableUndo={ undo }
+				__unstableContentEditable={ ! hasMultiSelection }
 			>
 				{ ( { isSelected, value, onChange, Editable } ) =>
 					<>
@@ -491,6 +493,7 @@ const RichTextContainer = compose( [
 			getSelectionEnd,
 			getSettings,
 			didAutomaticChange,
+			hasMultiSelection,
 		} = select( 'core/block-editor' );
 
 		const selectionStart = getSelectionStart();
@@ -512,6 +515,7 @@ const RichTextContainer = compose( [
 			selectionEnd: isSelected ? selectionEnd.offset : undefined,
 			isSelected,
 			didAutomaticChange: didAutomaticChange(),
+			hasMultiSelection: hasMultiSelection(),
 		};
 	} ),
 	withDispatch( ( dispatch, {

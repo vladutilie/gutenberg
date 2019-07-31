@@ -46,6 +46,10 @@ class Editable extends Component {
 			element.reversed = nextProps.reversed;
 		}
 
+		if ( this.props.contentEditable !== nextProps.contentEditable ) {
+			this.editorNode.contentEditable = nextProps.contentEditable;
+		}
+
 		const { removedKeys, updatedKeys } = diffAriaProps( this.props, nextProps );
 		removedKeys.forEach( ( key ) =>
 			element.removeAttribute( key ) );
