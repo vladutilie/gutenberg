@@ -92,6 +92,25 @@ export { combineReducers };
 export const select = defaultRegistry.select;
 
 /**
+ * Given the name of a registered store, returns an object that matches the store selectors.
+ * The functions return a promise that resolves when the selector resolution is finished.
+ * The selector functions are been pre-bound to pass the current state automatically.
+ * As a consumer, you need only pass arguments of the selector, if applicable.
+ *
+ * @param {string} name Store name
+ *
+ * @example
+ * ```js
+ * const { __experimentalResolveSelect } = wp.data;
+ *
+ * select( 'my-shop' ).getPrice( 'hammer' ).then(console.log)
+ * ```
+ *
+ * @return {Object} Object containing the store's selectors.
+ */
+export const __experimentalResolveSelect = defaultRegistry.__experimentalResolveSelect;
+
+/**
  * Given the name of a registered store, returns an object of the store's action creators.
  * Calling an action creator will cause it to be dispatched, updating the state value accordingly.
  *

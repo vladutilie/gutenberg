@@ -2,9 +2,11 @@
  * External dependencies
  */
 import {
+	omit,
 	without,
 	mapValues,
 } from 'lodash';
+import memize from 'memize';
 
 /**
  * Internal dependencies
@@ -88,6 +90,59 @@ export function createRegistry( storeConfigs = {}, parent = null ) {
 		return parent && parent.select( reducerKey );
 	}
 
+	const getResolveSelectors = memize(
+		( selectors ) => {
+			return mapValues(
+				omit(
+					selectors,
+					[
+						'getIsResolving',
+						'hasStartedResolution',
+						'hasFinishedResolution',
+						'isResolving',
+						'getCachedResolvers',
+					]
+				),
+				( selector, selectorName ) => {
+					return ( ...args ) => {
+						return new Promise( ( resolve ) => {
+							const hasFinished = () => selectors
+								.hasFinishedResolution( selectorName, args );
+							const getResult = () => selector.apply( null, args );
+
+							// trigger the selector (to trigger the resolver)
+							const result = getResult();
+							if ( hasFinished() ) {
+								return resolve( result );
+							}
+
+							const unsubscribe = subscribe( () => {
+								if ( hasFinished() ) {
+									unsubscribe();
+									resolve( getResult() );
+								}
+							} );
+						} );
+					};
+				}
+			);
+		},
+		{ maxSize: 1 }
+	);
+
+	/**
+	 * Calls a selector given the current state and extra arguments and
+	 * return a promise that resolves when the selector resolution is finished.
+	 *
+	 * @param {string} reducerKey Part of the state shape to register the
+	 *                            selectors for.
+	 *
+	 * @return {Promise} Promise resolving to the selector returned value.
+	 */
+	function __experimentalResolveSelect( reducerKey ) {
+		return getResolveSelectors( select( reducerKey ) );
+	}
+
 	/**
 	 * Returns the available actions for a part of the state.
 	 *
@@ -143,6 +198,7 @@ export function createRegistry( storeConfigs = {}, parent = null ) {
 	let registry = {
 		registerGenericStore,
 		stores,
+		__experimentalResolveSelect,
 		namespaces: stores, // TODO: Deprecate/remove this.
 		subscribe,
 		select,
