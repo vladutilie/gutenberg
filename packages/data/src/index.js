@@ -103,7 +103,7 @@ export const select = defaultRegistry.select;
  * ```js
  * const { __experimentalResolveSelect } = wp.data;
  *
- * select( 'my-shop' ).getPrice( 'hammer' ).then(console.log)
+ * __experimentalResolveSelect( 'my-shop' ).getPrice( 'hammer' ).then(console.log)
  * ```
  *
  * @return {Object} Object containing the store's selectors.
