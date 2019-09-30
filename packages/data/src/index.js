@@ -106,7 +106,7 @@ export const select = defaultRegistry.select;
  * __experimentalResolveSelect( 'my-shop' ).getPrice( 'hammer' ).then(console.log)
  * ```
  *
- * @return {Object} Object containing the store's selectors.
+ * @return {Object} Object containing the store's promise-wrapped selectors.
  */
 export const __experimentalResolveSelect = defaultRegistry.__experimentalResolveSelect;
 
