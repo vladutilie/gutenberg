@@ -132,7 +132,7 @@ export function createRegistry( storeConfigs = {}, parent = null ) {
 
 	/**
 	 * Calls a selector given the current state and extra arguments and
-	 * return a promise that resolves when the selector resolution is finished.
+	 * returns a promise that resolves when the selector resolution is finished.
 	 *
 	 * @param {string} reducerKey Part of the state shape to register the
 	 *                            selectors for.
