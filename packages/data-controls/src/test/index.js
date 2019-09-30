@@ -31,9 +31,21 @@ describe( 'controls', () => {
 		const selectorWithFalseResolver = jest.fn();
 		selectorWithFalseResolver.hasResolver = false;
 		const hasFinishedResolution = jest.fn();
-		const unsubscribe = jest.fn();
-		let subscribedCallback;
+		const resolveSelectSelectorWithResolver = jest.fn();
+		const resolveSelectselectorWithUndefinedResolver = jest.fn();
+		const resolveSelectselectorWithFalseResolver = jest.fn();
+
 		const registryMock = {
+			__experimentalResolveSelect: ( storeKey ) => {
+				const stores = {
+					mockStore: {
+						selectorWithResolver: resolveSelectSelectorWithResolver,
+						selectorWithUndefinedResolver: resolveSelectselectorWithUndefinedResolver,
+						selectorWithFalseResolver: resolveSelectselectorWithFalseResolver,
+					},
+				};
+				return stores[ storeKey ];
+			},
 			select: ( storeKey ) => {
 				const stores = {
 					mockStore: {
@@ -47,12 +59,6 @@ describe( 'controls', () => {
 				};
 				return stores[ storeKey ];
 			},
-			subscribe: jest.fn(
-				( subscribeCallback ) => {
-					subscribedCallback = subscribeCallback;
-					return unsubscribe;
-				}
-			),
 		};
 		const getSelectorArgs = ( storeKey, selectorName, ...args ) => (
 			{ storeKey, selectorName, args }
@@ -62,13 +68,13 @@ describe( 'controls', () => {
 			selectorWithFalseResolver.mockReturnValue( 'bar' );
 			selectorWithResolver.mockReturnValue( 'resolved' );
 			hasFinishedResolution.mockReturnValue( false );
+			resolveSelectSelectorWithResolver.mockResolvedValue( 'resolved' );
 		} );
 		afterEach( () => {
 			selectorWithUndefinedResolver.mockClear();
 			selectorWithResolver.mockClear();
 			selectorWithFalseResolver.mockClear();
 			hasFinishedResolution.mockClear();
-			unsubscribe.mockClear();
 		} );
 		it( 'invokes selector with undefined resolver', () => {
 			const testControl = controls.SELECT( registryMock );
@@ -92,14 +98,13 @@ describe( 'controls', () => {
 		} );
 		describe( 'invokes selector with resolver set to true', () => {
 			const testControl = controls.SELECT( registryMock );
-			it( 'returns a promise', () => {
+			it( 'returns a promise', async () => {
 				const value = testControl( getSelectorArgs(
 					'mockStore',
 					'selectorWithResolver'
 				) );
-				expect( value ).toBeInstanceOf( Promise );
-				expect( hasFinishedResolution ).toHaveBeenCalled();
-				expect( registryMock.subscribe ).toHaveBeenCalled();
+				await expect( value ).resolves.toBe( 'resolved' );
+				expect( resolveSelectSelectorWithResolver ).toHaveBeenCalled();
 			} );
 			it( 'selector with resolver resolves to expected result when ' +
 				'finished', async () => {
@@ -108,9 +113,8 @@ describe( 'controls', () => {
 					'selectorWithResolver'
 				) );
 				hasFinishedResolution.mockReturnValue( true );
-				subscribedCallback();
+				expect( resolveSelectSelectorWithResolver ).toHaveBeenCalled();
 				await expect( value ).resolves.toBe( 'resolved' );
-				expect( unsubscribe ).toHaveBeenCalled();
 			} );
 		} );
 	} );

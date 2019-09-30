@@ -78,7 +78,7 @@ export { combineReducers };
  * The selector functions are been pre-bound to pass the current state automatically.
  * As a consumer, you need only pass arguments of the selector, if applicable.
  *
- * @param {string} name Store name
+ * @param {string} name Store name.
  *
  * @example
  * ```js
@@ -92,12 +92,12 @@ export { combineReducers };
 export const select = defaultRegistry.select;
 
 /**
- * Given the name of a registered store, returns an object that matches the store selectors.
- * The functions return a promise that resolves when the selector resolution is finished.
- * The selector functions are been pre-bound to pass the current state automatically.
- * As a consumer, you need only pass arguments of the selector, if applicable.
+ * Given the name of a registered store, returns an object containing the store's
+ * selectors pre-bound to state so that you only need to supply additional arguments,
+ * and modified so that they return promises that resolve to their eventual values,
+ * after any resolvers have ran.
  *
- * @param {string} name Store name
+ * @param {string} name Store name.
  *
  * @example
  * ```js
@@ -117,7 +117,7 @@ export const __experimentalResolveSelect = defaultRegistry.__experimentalResolve
  * Note: Action creators returned by the dispatch will return a promise when
  * they are called.
  *
- * @param {string} name Store name
+ * @param {string} name Store name.
  *
  * @example
  * ```js
