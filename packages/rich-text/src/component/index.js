@@ -78,10 +78,6 @@ function createPrepareEditableTree( props, prefix ) {
 	}, value.formats );
 }
 
-export const pickAriaProps = ( props ) =>
-	pickBy( props, ( value, key ) =>
-		startsWith( key, 'aria-' ) && ! isNil( value ) );
-
 /**
  * See export statement below.
  */
@@ -946,16 +942,18 @@ class RichText extends Component {
 			forwardedRef,
 			__unstableMultilineTag: multilineTag,
 		} = this.props;
+		const ariaProps = pickBy( this.props, ( value, key ) =>
+			startsWith( key, 'aria-' ) );
 
 		return (
 			<Editable
 				{ ...props }
+				{ ...ariaProps }
 				ref={ forwardedRef }
 				tagName={ tagName }
 				style={ style }
 				value={ this.record }
 				placeholder={ placeholder }
-				{ ...pickAriaProps( this.props ) }
 				className={ classnames( 'rich-text', className ) }
 				onPaste={ this.onPaste }
 				onInput={ this.onInput }
