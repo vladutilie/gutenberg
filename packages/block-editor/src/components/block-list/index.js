@@ -177,29 +177,20 @@ class BlockList extends Component {
 		const selection = window.getSelection();
 
 		// If no selection is found, end multi selection.
-		if ( ! selection.rangeCount ) {
+		if ( ! selection.rangeCount || selection.isCollapsed ) {
 			this.props.onStopMultiSelect();
 			return;
 		}
 
-		const { startContainer, endContainer } = selection.getRangeAt( 0 );
-		const startEl = this.ref.current.querySelector(
-			`[data-block="${ this.startClientId }"]`
-		);
-
-		// We need the container where mouse selection is released, not where
-		// it is initiated pressed.
-		let endEl = startEl.contains( startContainer ) ?
-			endContainer :
-			startContainer;
+		let { focusNode } = selection;
 		let clientId;
 
 		// Find the client ID of the block where the selection ends.
 		do {
-			endEl = endEl.parentElement;
+			focusNode = focusNode.parentElement;
 		} while (
-			endEl &&
-			! ( clientId = endEl.getAttribute( 'data-block' ) )
+			focusNode &&
+			! ( clientId = focusNode.getAttribute( 'data-block' ) )
 		);
 
 		// If the final selection doesn't leave the block, there is no multi
