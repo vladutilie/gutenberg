@@ -951,11 +951,8 @@ class RichText extends Component {
 			style,
 			className,
 			placeholder,
-<<<<<<< HEAD
 			forwardedRef,
-=======
 			__unstableContentEditable,
->>>>>>> Native Multi Block Selection
 		} = this.props;
 		// Generating a key that includes `tagName` ensures that if the tag
 		// changes, we replace the relevant element. This is needed because we

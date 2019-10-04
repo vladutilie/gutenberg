@@ -48,9 +48,9 @@ class Editable extends Component {
 
 		if ( this.props.contentEditable !== nextProps.contentEditable ) {
 			if ( nextProps.contentEditable ) {
-				this.editorNode.setAttribute( 'contenteditable', 'true' );
+				element.setAttribute( 'contenteditable', 'true' );
 			} else {
-				this.editorNode.removeAttribute( 'contenteditable' );
+				element.removeAttribute( 'contenteditable' );
 			}
 		}
 
