@@ -944,7 +944,7 @@ class RichText extends Component {
 			className,
 			placeholder,
 			forwardedRef,
-			multilineTag,
+			__unstableMultilineTag: multilineTag,
 		} = this.props;
 
 		return (
