@@ -434,7 +434,9 @@ class RichTextWrapper extends Component {
 								noArrow
 								position="top center"
 								focusOnMount={ false }
-								getAnchorRect={ this.getAnchorRect }
+								anchorWithoutPadding
+								anchorVerticalBuffer={ 6 }
+								anchorRef={ this.ref.current }
 								className="block-editor-rich-text__inline-format-toolbar"
 							>
 								<FormatToolbar />
