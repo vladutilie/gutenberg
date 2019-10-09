@@ -66,7 +66,8 @@ function computeAnchorRect(
 	anchorRefFallback,
 	anchorRect,
 	getAnchorRect,
-	anchorRef = false
+	anchorRef = false,
+	anchorIncludePadding
 ) {
 	if ( anchorRect ) {
 		return anchorRect;
@@ -89,7 +90,13 @@ function computeAnchorRect(
 			return getRectangleFromRange( anchorRef );
 		}
 
-		return anchorRef.getBoundingClientRect();
+		const rect = anchorRef.getBoundingClientRect();
+
+		if ( anchorIncludePadding ) {
+			return rect;
+		}
+
+		return withoutPadding( rect, anchorRef );
 	}
 
 	if ( ! anchorRefFallback.current ) {
@@ -98,6 +105,11 @@ function computeAnchorRect(
 
 	const { parentNode } = anchorRefFallback.current;
 	const rect = parentNode.getBoundingClientRect();
+
+	if ( anchorIncludePadding ) {
+		return rect;
+	}
+
 	return withoutPadding( rect, parentNode );
 }
 
@@ -158,7 +170,7 @@ function useAnchor(
 	anchorRect,
 	getAnchorRect,
 	anchorRef,
-	anchorWithoutPadding,
+	anchorIncludePadding,
 	anchorVerticalBuffer,
 	anchorHorizontalBuffer
 ) {
@@ -168,7 +180,8 @@ function useAnchor(
 			anchorRefFallback,
 			anchorRect,
 			getAnchorRect,
-			anchorRef
+			anchorRef,
+			anchorIncludePadding
 		);
 
 		newAnchor = addBuffer(
@@ -176,14 +189,6 @@ function useAnchor(
 			anchorVerticalBuffer,
 			anchorHorizontalBuffer
 		);
-
-		if (
-			anchorWithoutPadding &&
-			anchorRef &&
-			! ( anchorRef instanceof window.Range )
-		) {
-			newAnchor = withoutPadding( newAnchor, anchorRef );
-		}
 
 		if ( ! isShallowEqual( newAnchor, anchor ) ) {
 			setAnchor( newAnchor );
