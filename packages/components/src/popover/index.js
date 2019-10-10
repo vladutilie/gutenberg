@@ -158,7 +158,7 @@ function withoutPadding( rect, element ) {
  * @param {Object}   anchorRect             Anchor Rect prop used to override the computed value.
  * @param {Function} getAnchorRect          Function used to override the anchor value computation algorithm.
  * @param {Object}   anchorRef              Reference to the popover anchor fallback element.
- * @param {Object}   anchorWithoutPadding   Whether to subtract the anchor padding.
+ * @param {Object}   anchorIncludePadding   Whether to include the anchor padding.
  * @param {Object}   anchorVerticalBuffer   Vertical buffer for the anchor.
  * @param {Object}   anchorHorizontalBuffer Horizontal buffer for the anchor.
  *
@@ -347,7 +347,7 @@ const Popover = ( {
 	range,
 	focusOnMount = 'firstElement',
 	anchorRef,
-	anchorWithoutPadding,
+	anchorIncludePadding,
 	anchorVerticalBuffer,
 	anchorHorizontalBuffer,
 	anchorRect,
@@ -372,7 +372,7 @@ const Popover = ( {
 		anchorRect,
 		getAnchorRect,
 		anchorRef,
-		anchorWithoutPadding,
+		anchorIncludePadding,
 		anchorVerticalBuffer,
 		anchorHorizontalBuffer
 	);

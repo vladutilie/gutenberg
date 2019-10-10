@@ -8,7 +8,7 @@ exports[`Popover should pass additional props to portaled element 1`] = `
     <div>
       <div>
         <div
-          class="components-popover is-bottom is-center components-animate__appear is-from-top"
+          class="components-popover is-bottom is-right components-animate__appear is-from-left is-from-top"
           role="tooltip"
           style=""
         >
@@ -33,7 +33,7 @@ exports[`Popover should render content 1`] = `
     <div>
       <div>
         <div
-          class="components-popover is-bottom is-center components-animate__appear is-from-top"
+          class="components-popover is-bottom is-right components-animate__appear is-from-left is-from-top"
           style=""
         >
           <div
