@@ -133,10 +133,10 @@ function withoutPadding( rect, element ) {
 		paddingLeft,
 		paddingRight,
 	} = window.getComputedStyle( element );
-	const top = parseInt( paddingTop, 10 );
-	const bottom = parseInt( paddingBottom, 10 );
-	const left = parseInt( paddingLeft, 10 );
-	const right = parseInt( paddingRight, 10 );
+	const top = paddingTop ? parseInt( paddingTop, 10 ) : 0;
+	const bottom = paddingBottom ? parseInt( paddingBottom, 10 ) : 0;
+	const left = paddingLeft ? parseInt( paddingLeft, 10 ) : 0;
+	const right = paddingRight ? parseInt( paddingRight, 10 ) : 0;
 
 	return {
 		x: rect.left + left,
