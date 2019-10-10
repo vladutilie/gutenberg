@@ -40,7 +40,7 @@ describe( 'Image Block', () => {
 
 		instance.onSetNewTab( true );
 
-		expect( setAttributes ).toHaveBeenCalledWith( { linkTarget: '_blank', rel: undefined } );
+		expect( setAttributes ).toHaveBeenCalledWith( { linkTarget: '_blank', rel: NEW_TAB_REL } );
 	} );
 
 	it( 'unset link target', () => {
