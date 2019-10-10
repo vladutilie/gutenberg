@@ -38,27 +38,24 @@
  * General Post Content Layout
  */
 
-// Add side padding for blocks that are immediate descendants of post_content.
+// Add side padding for the main block container, currently post_content.
 // The purpose of this padding is to ensure that on small viewports, there is
 // room for the block border that sits 14px ($block-padding) offset from the
-// block footprint.
-// This side padding may be worth revisiting as more block areas than
-// post_content are explored. Maybe it can be moved to .editor-styles-wrapper
-// instead, for a more agnostic experience.
-// If that happens, this entire section can be removed/refactored.
-.block-editor-block-list__layout .block-editor-block-list__block {
-	padding-left: $block-padding + $border-width;
-	padding-right: $block-padding + $border-width;
+// block footprint, as well as the side-UI.
+.block-editor-block-list__layout {
+	padding-left: $block-padding;
+	padding-right: $block-padding;
+
+	// Beyond the mobile breakpoint, compensate for side UI.
+	@include break-small() {
+		padding-left: $block-padding + $block-side-ui-width + $block-padding + $border-width * 2;
+		padding-right: $block-padding + $block-side-ui-width + $block-padding + $border-width * 2;
+	}
 
 	// Don't propogate that padding to nested blocks.
 	.block-editor-block-list__layout {
-		// Compensate for side UI.
 		padding-left: 0;
 		padding-right: 0;
-
-		// Compensate for block padding.
-		margin-left: -$block-padding - $border-width;
-		margin-right: -$block-padding - $border-width;
 	}
 }
 
@@ -565,8 +562,8 @@
 		}
 
 		> .block-editor-block-list__block-edit {
-			margin-left: -$block-padding - $border-width;
-			margin-right: -$block-padding - $border-width;
+			margin-left: -$block-padding - $block-padding - $block-side-ui-width - $border-width - $border-width;
+			margin-right: -$block-padding - $block-padding - $block-side-ui-width - $border-width - $border-width;
 		}
 
 		> .block-editor-block-list__block-edit::before {
@@ -643,10 +640,8 @@
 	}
 
 	// Left side UI.
-	&.is-multi-selected > .block-editor-block-mover,
-	> .block-editor-block-list__block-edit > .block-editor-block-mover {
-		padding-right: $block-side-ui-clearance;
-
+	> .block-editor-block-list__block-edit > .block-editor-block-mover,
+	&.is-multi-selected > .block-editor-block-mover {
 		// Position for top level blocks.
 		left: -$block-side-ui-width - $block-side-ui-clearance - $block-padding - $border-width - $grid-size;
 
@@ -655,10 +650,6 @@
 		@include break-small() {
 			display: block;
 		}
-	}
-
-	&.is-multi-selected > .block-editor-block-mover {
-		left: -$block-side-ui-width - $block-side-ui-clearance - $grid-size;
 	}
 }
 

@@ -71,10 +71,11 @@
 	}
 
 	// Stretch to mimic outline padding on desktop.
+	// Note that we can't target the textarea as it can't be stretched.
 	@include break-small() {
 		> div {
-			margin-left: -$block-side-ui-clearance;
-			margin-right: -$block-side-ui-clearance;
+			margin-left: -$block-padding - $block-side-ui-clearance;
+			margin-right: -$block-padding - $block-side-ui-clearance;
 		}
 	}
 }
