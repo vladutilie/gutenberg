@@ -183,14 +183,6 @@ export const SETTINGS_DEFAULTS = {
 			gradient: 'linear-gradient(135deg, rgb(74, 234, 220) 0%, rgb(151, 120, 209) 20%, rgb(207, 42, 186) 40%, rgb(238, 44, 130) 60%, rgb(251, 105, 98) 80%, rgb(254, 248, 76) 100% )',
 		},
 		{
-			name: __( 'Blush light purple' ),
-			gradient: 'linear-gradient(135deg, rgb(255, 206, 236) 0%, rgb(152, 150, 240) 100% )',
-		},
-		{
-			name: __( 'Blush bordeaux' ),
-			gradient: 'linear-gradient(135deg, rgb(254, 205, 165) 0%, rgb(254, 45, 45) 50%, rgb(107, 0, 62) 100% )',
-		},
-		{
 			name: __( 'Purple crush' ),
 			gradient: 'linear-gradient(135deg, rgb(52, 226, 228) 0%, rgb(71, 33, 251) 50%, rgb(171, 29, 254) 100% )',
 		},
@@ -199,28 +191,12 @@ export const SETTINGS_DEFAULTS = {
 			gradient: 'linear-gradient(135deg, rgb(255, 203, 112) 0%, rgb(199, 81, 192) 50%, rgb(65, 88, 208) 100% )',
 		},
 		{
-			name: __( 'Hazy dawn' ),
-			gradient: 'linear-gradient(135deg, rgb(250, 172, 168) 0%, rgb(218, 208, 236) 100% )',
-		},
-		{
 			name: __( 'Pale ocean' ),
 			gradient: 'linear-gradient(135deg, rgb(255, 245, 203) 0%, rgb(182, 227, 212) 50%, rgb(51, 167, 181) 100% )',
 		},
 		{
 			name: __( 'Electric grass' ),
 			gradient: 'linear-gradient(135deg, rgb(202, 248, 128) 0%, rgb(113, 206, 126) 100% )',
-		},
-		{
-			name: __( 'Subdued olive' ),
-			gradient: 'linear-gradient(135deg, rgb(250, 250, 225) 0%, rgb(103, 166, 113) 100% )',
-		},
-		{
-			name: __( 'Atomic cream' ),
-			gradient: 'linear-gradient(135deg, rgb(253, 215, 154) 0%, rgb(0, 74, 89) 100% )',
-		},
-		{
-			name: __( 'Nightshade' ),
-			gradient: 'linear-gradient(135deg, rgb(51, 9, 104) 0%, rgb(49, 205, 207) 100% )',
 		},
 		{
 			name: __( 'Midnight' ),
