@@ -9,7 +9,7 @@ import {
 	requestImageFailedRetryDialog,
 	requestImageUploadCancelDialog,
 } from 'react-native-gutenberg-bridge';
-import { isEmpty, map } from 'lodash';
+import { isEmpty, map, get } from 'lodash';
 
 /**
  * WordPress dependencies
@@ -36,7 +36,8 @@ import {
 import { __, sprintf } from '@wordpress/i18n';
 import { isURL } from '@wordpress/url';
 import { doAction, hasAction } from '@wordpress/hooks';
-import { withPreferredColorScheme } from '@wordpress/compose';
+import { compose, withPreferredColorScheme } from '@wordpress/compose';
+import { withSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -195,7 +196,17 @@ export class ImageEdit extends React.Component {
 	}
 
 	onSetSizeSlug( sizeSlug ) {
+		const { image } = this.props;
+
+		const url = get( image, [ 'media_details', 'sizes', sizeSlug, 'source_url' ] );
+		if ( ! url ) {
+			return null;
+		}
+
 		this.props.setAttributes( {
+			url,
+			width: undefined,
+			height: undefined,
 			sizeSlug,
 		} );
 	}
@@ -404,4 +415,14 @@ export class ImageEdit extends React.Component {
 	}
 }
 
-export default withPreferredColorScheme( ImageEdit );
+export default compose( [
+	withSelect( ( select, props ) => {
+		const { getMedia } = select( 'core' );
+		const { attributes: { id }, isSelected } = props;
+
+		return {
+			image: id && isSelected ? getMedia( id ) : null,
+		};
+	} ),
+	withPreferredColorScheme,
+] )( ImageEdit );
