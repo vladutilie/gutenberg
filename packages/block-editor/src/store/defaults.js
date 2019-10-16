@@ -158,10 +158,6 @@ export const SETTINGS_DEFAULTS = {
 			gradient: 'linear-gradient(135deg, rgba(6, 147, 227, 1) 0%, rgb(155, 81, 224) 100%)',
 		},
 		{
-			name: __( 'Vivid green cyan to vivid cyan blue' ),
-			gradient: 'linear-gradient(135deg, rgba(0, 208, 132, 1) 0%, rgba(6, 147, 227, 1) 100%)',
-		},
-		{
 			name: __( 'Light green cyan to vivid green cyan' ),
 			gradient: 'linear-gradient(135deg, rgb(122, 220, 180) 0%, rgb(0, 208, 130) 100%)',
 		},
@@ -177,14 +173,17 @@ export const SETTINGS_DEFAULTS = {
 			name: __( 'Very light gray to cyan bluish gray' ),
 			gradient: 'linear-gradient(135deg, rgb(238, 238, 238) 0%, rgb(169, 184, 195)  100%)',
 		},
-		// The following use new, customized colors.
 		{
 			name: __( 'Cool to warm spectrum' ),
 			gradient: 'linear-gradient(135deg, rgb(74, 234, 220) 0%, rgb(151, 120, 209) 20%, rgb(207, 42, 186) 40%, rgb(238, 44, 130) 60%, rgb(251, 105, 98) 80%, rgb(254, 248, 76) 100% )',
 		},
 		{
-			name: __( 'Purple crush' ),
-			gradient: 'linear-gradient(135deg, rgb(52, 226, 228) 0%, rgb(71, 33, 251) 50%, rgb(171, 29, 254) 100% )',
+			name: __( 'Blush light purple' ),
+			gradient: 'linear-gradient(135deg, rgb(255, 206, 236) 0%, rgb(152, 150, 240) 100% )',
+		},
+		{
+			name: __( 'Blush bordeaux' ),
+			gradient: 'linear-gradient(135deg, rgb(254, 205, 165) 0%, rgb(254, 45, 45) 50%, rgb(107, 0, 62) 100% )',
 		},
 		{
 			name: __( 'Luminous dusk' ),
