@@ -329,6 +329,14 @@ class CoverEdit extends Component {
 									onChange={ ( value ) => setAttributes( { focalPoint: value } ) }
 								/>
 							) }
+							{ VIDEO_BACKGROUND_TYPE === backgroundType && (
+								<video
+									autoPlay
+									muted
+									loop
+									src={ url }
+								/>
+							) }
 							<PanelRow>
 								<Button
 									isDefault
