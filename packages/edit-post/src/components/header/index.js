@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { IconButton } from '@wordpress/components';
 import {
+	EntitiesSavedStates,
 	PostPreviewButton,
 	PostSavedState,
 } from '@wordpress/editor';
@@ -27,6 +28,7 @@ function Header( {
 	isEditorSidebarOpened,
 	isPublishSidebarOpened,
 	isSaving,
+	enableFullSiteEditing,
 	openGeneralSidebar,
 } ) {
 	const toggleGeneralSidebar = isEditorSidebarOpened ? closeGeneralSidebar : openGeneralSidebar;
@@ -44,6 +46,7 @@ function Header( {
 				<HeaderToolbar />
 			</div>
 			<div className="edit-post-header__settings">
+				{ enableFullSiteEditing && <EntitiesSavedStates /> }
 				{ ! isPublishSidebarOpened && (
 					// This button isn't completely hidden by the publish sidebar.
 					// We can't hide the whole toolbar when the publish sidebar is open because
@@ -89,6 +92,7 @@ export default compose(
 		isEditorSidebarOpened: select( 'core/edit-post' ).isEditorSidebarOpened(),
 		isPublishSidebarOpened: select( 'core/edit-post' ).isPublishSidebarOpened(),
 		isSaving: select( 'core/edit-post' ).isSavingMetaBoxes(),
+		enableFullSiteEditing: select( 'core/editor' ).getEditorSettings( '__experimentalEnableFullSiteEditing' ),
 	} ) ),
 	withDispatch( ( dispatch, ownProps, { select } ) => {
 		const { getBlockSelectionStart } = select( 'core/block-editor' );
