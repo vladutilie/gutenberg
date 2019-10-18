@@ -16,6 +16,7 @@ import { create, getTextContent } from '@wordpress/rich-text';
  * Internal dependencies
  */
 import BlockIcon from '../block-icon';
+import BlockMover from '../block-mover';
 
 /**
  * Get the block display name, if it has one, or the block title if it doesn't.
@@ -69,6 +70,7 @@ export default function BlockNavigationList( {
 								{ getBlockDisplayName( blockType, block.attributes ) }
 								{ isSelected && <span className="screen-reader-text">{ __( '(selected block)' ) }</span> }
 							</Button>
+							{ blocks.length > 1 && ( <BlockMover clientIds={ [ block.clientId ] } /> ) }
 						</div>
 						{ showNestedBlocks && !! block.innerBlocks && !! block.innerBlocks.length && (
 							<BlockNavigationList
