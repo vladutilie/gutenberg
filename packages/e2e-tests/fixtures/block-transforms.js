@@ -118,6 +118,13 @@ export const EXPECTED_TRANSFORMS = {
 		],
 		originalBlock: 'Cover',
 	},
+
+	'core__cover__solid-color': {
+		availableTransforms: [
+			'Group',
+		],
+		originalBlock: 'Cover',
+	},
 	core__cover__video: {
 		availableTransforms: [
 			'Group',
