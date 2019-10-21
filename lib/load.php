@@ -30,6 +30,11 @@ if ( class_exists( 'WP_REST_Controller' ) ) {
 		require dirname( __FILE__ ) . '/class-wp-rest-block-directory-controller.php';
 	}
 
+	if ( ! class_exists( 'WP_REST_URL_Details_Controller' ) ) {
+		require dirname( __FILE__ ) . '/class-wp-rest-url-details-controller.php';
+	}
+
+
 	require dirname( __FILE__ ) . '/rest-api.php';
 }
 
