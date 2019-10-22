@@ -15,39 +15,42 @@
  * @return string Returns the post content with the legacy widget added.
  */
 function render_block_navigation_menu( $attributes, $content, $block ) {
-	return '<nav class="wp-block-navigation-menu">' . build_navigation_menu_html( $block ) . '</nav>';
+	$items = setup_block_nav_items( $block );
+	$args  = (object) array(
+		'before'          => '',
+		'after'           => '',
+		'link_before'     => '',
+		'link_after'      => '',
+		'theme_location'  => 'block',
+	);
+
+	return '<nav class="wp-block-navigation-menu"><ul class="menu">' . walk_nav_menu_tree( $items, 0, $args ) . '</ul></nav>';
 }
 
 /**
- * Walks the inner block structure and returns an HTML list for it.
+ * Prepares menu items to be used in Walker_Nav_Menu.
  *
- * @param array $block The block.
- *
- * @return string Returns  an HTML list from innerBlocks.
+ * @param array $block The parsed block.
+ * @return array Menu items
  */
-function build_navigation_menu_html( $block ) {
-	$html = '';
-	foreach ( (array) $block['innerBlocks'] as $key => $menu_item ) {
-		$html .= '<li class="wp-block-navigation-menu-item"><a class="wp-block-navigation-menu-item"';
-		if ( isset( $menu_item['attrs']['destination'] ) ) {
-			$html .= ' href="' . $menu_item['attrs']['destination'] . '"';
-		}
-		if ( isset( $menu_item['attrs']['title'] ) ) {
-			$html .= ' title="' . $menu_item['attrs']['title'] . '"';
-		}
-		$html .= '>';
-		if ( isset( $menu_item['attrs']['label'] ) ) {
-			$html .= $menu_item['attrs']['label'];
-		}
-		$html .= '</a>';
+function setup_block_nav_items( $block ) {
+	$nav_menu_items = array();
+	$nav_menu_item  = array(
+		'post_type' => 'nav_menu_item',
+		'post_content' => '',
+		'post_excerpt' => '',
+		'current' => false,
+	);
 
-		if ( count( (array) $menu_item['innerBlocks'] ) > 0 ) {
-			$html .= build_navigation_menu_html( $menu_item );
-		}
+	foreach ( $block['innerBlocks'] as $index => $inner_block ) {
+		$nav_menu_item['ID']         = $index;
+		$nav_menu_item['post_title'] = $inner_block['attrs']['label'];
+		$nav_menu_item['url']        = $inner_block['attrs']['destination'];
 
-		$html .= '</li>';
+		$nav_menu_items[] = (object) $nav_menu_item;
 	}
-	return '<ul>' . $html . '</ul>';
+
+	return array_map( 'wp_setup_nav_menu_item', $nav_menu_items );
 }
 
 /**
