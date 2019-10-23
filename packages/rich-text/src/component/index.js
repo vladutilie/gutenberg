@@ -2,11 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import {
-	find,
-	isNil,
-	pickBy,
-} from 'lodash';
+import { find, isNil, pickBy } from 'lodash';
 
 /**
  * WordPress dependencies
@@ -73,9 +69,10 @@ function createPrepareEditableTree( props, prefix ) {
 		return accumulator;
 	}, [] );
 
-	return ( value ) => fns.reduce( ( accumulator, fn ) => {
-		return fn( accumulator, value.text );
-	}, value.formats );
+	return ( value ) =>
+		fns.reduce( ( accumulator, fn ) => {
+			return fn( accumulator, value.text );
+		}, value.formats );
 }
 
 /**
@@ -107,11 +104,7 @@ function fixPlaceholderSelection() {
  * See export statement below.
  */
 class RichText extends Component {
-	constructor( {
-		value,
-		selectionStart,
-		selectionEnd,
-	} ) {
+	constructor( { value, selectionStart, selectionEnd } ) {
 		super( ...arguments );
 
 		this.onFocus = this.onFocus.bind( this );
@@ -166,7 +159,9 @@ class RichText extends Component {
 
 			if ( computedStyle.display === 'inline' ) {
 				// eslint-disable-next-line no-console
-				console.warn( 'RichText cannot be used with an inline container. Please use a different tagName.' );
+				console.warn(
+					'RichText cannot be used with an inline container. Please use a different tagName.'
+				);
 			}
 		}
 	}
@@ -344,11 +339,7 @@ class RichText extends Component {
 		// (CJK), do not trigger a change if characters are being composed.
 		// Browsers setting `isComposing` to `true` will usually emit a final
 		// `input` event when the characters are composed.
-		if (
-			event &&
-			event.nativeEvent &&
-			event.nativeEvent.isComposing
-		) {
+		if ( event && event.nativeEvent && event.nativeEvent.isComposing ) {
 			// Also don't update any selection.
 			document.removeEventListener( 'selectionchange', this.onSelectionChange );
 			return;
@@ -367,10 +358,10 @@ class RichText extends Component {
 		// The browser formatted something or tried to insert HTML.
 		// Overwrite it. It will be handled later by the format library if
 		// needed.
-		if ( inputType && (
-			inputType.indexOf( 'format' ) === 0 ||
-			INSERTION_INPUT_TYPES_TO_IGNORE.has( inputType )
-		) ) {
+		if (
+			inputType &&
+			( inputType.indexOf( 'format' ) === 0 || INSERTION_INPUT_TYPES_TO_IGNORE.has( inputType ) )
+		) {
 			this.applyRecord( this.record );
 			return;
 		}
@@ -440,19 +431,13 @@ class RichText extends Component {
 	 * @param {Event|SyntheticEvent|DOMHighResTimeStamp} event
 	 */
 	onSelectionChange( event ) {
-		if (
-			event.type !== 'selectionchange' &&
-			! this.props.__unstableIsSelected
-		) {
+		if ( event.type !== 'selectionchange' && ! this.props.__unstableIsSelected ) {
 			return;
 		}
 
 		// In case of a keyboard event, ignore selection changes during
 		// composition.
-		if (
-			event.nativeEvent &&
-			event.nativeEvent.isComposing
-		) {
+		if ( event.nativeEvent && event.nativeEvent.isComposing ) {
 			return;
 		}
 
@@ -522,9 +507,7 @@ class RichText extends Component {
 		}
 
 		const computedStyle = getComputedStyle( element );
-		const newColor = computedStyle.color
-			.replace( ')', ', 0.2)' )
-			.replace( 'rgb', 'rgba' );
+		const newColor = computedStyle.color.replace( ')', ', 0.2)' ).replace( 'rgb', 'rgba' );
 		const selector = `.rich-text:focus ${ boundarySelector }`;
 		const rule = `background-color: ${ newColor }`;
 
@@ -670,8 +653,12 @@ class RichText extends Component {
 
 		if (
 			// Only override when no modifiers are pressed.
-			shiftKey || altKey || metaKey || ctrlKey ||
-			keyCode !== SPACE || multilineTag !== 'li'
+			shiftKey ||
+			altKey ||
+			metaKey ||
+			ctrlKey ||
+			keyCode !== SPACE ||
+			multilineTag !== 'li'
 		) {
 			return;
 		}
@@ -706,7 +693,10 @@ class RichText extends Component {
 
 		if (
 			// Only override left and right keys without modifiers pressed.
-			shiftKey || altKey || metaKey || ctrlKey ||
+			shiftKey ||
+			altKey ||
+			metaKey ||
+			ctrlKey ||
 			( keyCode !== LEFT && keyCode !== RIGHT )
 		) {
 			return;
@@ -838,19 +828,15 @@ class RichText extends Component {
 		} = this.props;
 
 		// Check if the content changed.
-		let shouldReapply = (
-			tagName === prevProps.tagName &&
-			value !== prevProps.value &&
-			value !== this.value
-		);
+		let shouldReapply =
+			tagName === prevProps.tagName && value !== prevProps.value && value !== this.value;
 
 		// Check if the selection changed.
-		shouldReapply = shouldReapply || (
-			isSelected && ! prevProps.isSelected && (
-				this.record.start !== selectionStart ||
-				this.record.end !== selectionEnd
-			)
-		);
+		shouldReapply =
+			shouldReapply ||
+			( isSelected &&
+				! prevProps.isSelected &&
+				( this.record.start !== selectionStart || this.record.end !== selectionEnd ) );
 
 		const prefix = 'format_prepare_props_';
 		const predicate = ( v, key ) => key.startsWith( prefix );
@@ -858,12 +844,10 @@ class RichText extends Component {
 		const prevPrepareProps = pickBy( prevProps, predicate );
 
 		// Check if any format props changed.
-		shouldReapply = shouldReapply ||
-			! isShallowEqual( prepareProps, prevPrepareProps );
+		shouldReapply = shouldReapply || ! isShallowEqual( prepareProps, prevPrepareProps );
 
 		// Rerender if the placeholder changed.
-		shouldReapply = shouldReapply ||
-			placeholder !== prevProps.placeholder;
+		shouldReapply = shouldReapply || placeholder !== prevProps.placeholder;
 
 		if ( shouldReapply ) {
 			this.value = value;
@@ -871,10 +855,7 @@ class RichText extends Component {
 			this.record.start = selectionStart;
 			this.record.end = selectionEnd;
 			this.applyRecord( this.record );
-		} else if (
-			this.record.start !== selectionStart ||
-			this.record.end !== selectionEnd
-		) {
+		} else if ( this.record.start !== selectionStart || this.record.end !== selectionEnd ) {
 			this.record = {
 				...this.record,
 				start: selectionStart,
@@ -958,13 +939,7 @@ class RichText extends Component {
 	}
 
 	Editable( props ) {
-		const {
-			tagName: Tagname = 'div',
-			style,
-			className,
-			placeholder,
-			forwardedRef,
-		} = this.props;
+		const { tagName: Tagname = 'div', style, className, placeholder, forwardedRef } = this.props;
 		// Generating a key that includes `tagName` ensures that if the tag
 		// changes, we replace the relevant element. This is needed because we
 		// prevent Editable component updates.
@@ -985,10 +960,14 @@ class RichText extends Component {
 				onPaste={ this.onPaste }
 				onInput={ this.onInput }
 				onCompositionEnd={ this.onCompositionEnd }
-				onKeyDown={ props.onKeyDown ? ( event ) => {
-					props.onKeyDown( event );
-					this.onKeyDown( event );
-				} : this.onKeyDown }
+				onKeyDown={
+					props.onKeyDown
+						? ( event ) => {
+								props.onKeyDown( event );
+								this.onKeyDown( event );
+						  }
+						: this.onKeyDown
+				}
 				onFocus={ this.onFocus }
 				onBlur={ this.onBlur }
 				onMouseDown={ this.onPointerDown }
@@ -1014,18 +993,21 @@ class RichText extends Component {
 
 		return (
 			<>
-				{ isSelected && <FormatEdit
-					allowedFormats={ allowedFormats }
-					withoutInteractiveFormatting={ withoutInteractiveFormatting }
-					value={ this.record }
-					onChange={ this.onChange }
-				/> }
-				{ children && children( {
-					isSelected,
-					value: this.record,
-					onChange: this.onChange,
-					Editable: this.Editable,
-				} ) }
+				{ isSelected && (
+					<FormatEdit
+						allowedFormats={ allowedFormats }
+						withoutInteractiveFormatting={ withoutInteractiveFormatting }
+						value={ this.record }
+						onChange={ this.onChange }
+					/>
+				) }
+				{ children &&
+					children( {
+						isSelected,
+						value: this.record,
+						onChange: this.onChange,
+						Editable: this.Editable,
+					} ) }
 				{ ! children && <this.Editable /> }
 			</>
 		);

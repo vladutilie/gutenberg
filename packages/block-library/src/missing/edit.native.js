@@ -25,14 +25,26 @@ export class UnsupportedBlockEdit extends Component {
 		const blockType = coreBlocks[ originalName ];
 
 		const title = blockType ? blockType.settings.title : __( 'Unsupported' );
-		const titleStyle = getStylesFromColorScheme( styles.unsupportedBlockMessage, styles.unsupportedBlockMessageDark );
+		const titleStyle = getStylesFromColorScheme(
+			styles.unsupportedBlockMessage,
+			styles.unsupportedBlockMessageDark
+		);
 
 		const icon = blockType ? normalizeIconObject( blockType.settings.icon ) : 'admin-plugins';
-		const iconStyle = getStylesFromColorScheme( styles.unsupportedBlockIcon, styles.unsupportedBlockIconDark );
+		const iconStyle = getStylesFromColorScheme(
+			styles.unsupportedBlockIcon,
+			styles.unsupportedBlockIconDark
+		);
 		const iconClassName = 'unsupported-icon' + '-' + preferredColorScheme;
 		return (
-			<View style={ getStylesFromColorScheme( styles.unsupportedBlock, styles.unsupportedBlockDark ) }>
-				<Icon className={ iconClassName } icon={ icon && icon.src ? icon.src : icon } color={ iconStyle.color } />
+			<View
+				style={ getStylesFromColorScheme( styles.unsupportedBlock, styles.unsupportedBlockDark ) }
+			>
+				<Icon
+					className={ iconClassName }
+					icon={ icon && icon.src ? icon.src : icon }
+					color={ iconStyle.color }
+				/>
 				<Text style={ titleStyle }>{ title }</Text>
 			</View>
 		);

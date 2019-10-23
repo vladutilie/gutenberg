@@ -162,14 +162,17 @@ export const registerCoreBlocks = () => {
  * __experimentalRegisterExperimentalCoreBlocks( settings );
  * ```
  */
-export const __experimentalRegisterExperimentalCoreBlocks = process.env.GUTENBERG_PHASE === 2 ? ( settings ) => {
-	const { __experimentalEnableLegacyWidgetBlock, __experimentalEnableMenuBlock } = settings;
+export const __experimentalRegisterExperimentalCoreBlocks =
+	process.env.GUTENBERG_PHASE === 2
+		? ( settings ) => {
+				const { __experimentalEnableLegacyWidgetBlock, __experimentalEnableMenuBlock } = settings;
 
-	[
-		__experimentalEnableLegacyWidgetBlock ? legacyWidget : null,
-		__experimentalEnableMenuBlock ? navigationMenu : null,
-		__experimentalEnableMenuBlock ? navigationMenuItem : null,
-		socialLinks,
-		...socialLink.sites,
-	].forEach( registerBlock );
-} : undefined;
+				[
+					__experimentalEnableLegacyWidgetBlock ? legacyWidget : null,
+					__experimentalEnableMenuBlock ? navigationMenu : null,
+					__experimentalEnableMenuBlock ? navigationMenuItem : null,
+					socialLinks,
+					...socialLink.sites,
+				].forEach( registerBlock );
+		  }
+		: undefined;

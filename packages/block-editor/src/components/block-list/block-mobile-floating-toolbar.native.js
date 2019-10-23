@@ -21,16 +21,16 @@ function FloatingToolbar( { children } ) {
 				return (
 					<TouchableWithoutFeedback>
 						<View
-						// Issue: `FloatingToolbar` placed above the first item in group is not touchable on Android.
-						// Temporary solution: Use `innerFloatingToolbar` to place `FloatingToolbar` over the first item in group.
-						// TODO: `{ top: innerFloatingToolbar ? 0 : -44 }` along with `innerFloatingToolbar` should be removed once issue is fixed.
+							// Issue: `FloatingToolbar` placed above the first item in group is not touchable on Android.
+							// Temporary solution: Use `innerFloatingToolbar` to place `FloatingToolbar` over the first item in group.
+							// TODO: `{ top: innerFloatingToolbar ? 0 : -44 }` along with `innerFloatingToolbar` should be removed once issue is fixed.
 							style={ [ styles.floatingToolbarFill, { top: innerFloatingToolbar ? 0 : -44 } ] }
-						>{ children }
+						>
+							{ children }
 						</View>
 					</TouchableWithoutFeedback>
 				);
 			} }
-
 		</Fill>
 	);
 }

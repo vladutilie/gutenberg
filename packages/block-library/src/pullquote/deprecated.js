@@ -12,9 +12,7 @@ import {
 	getColorObjectByAttributeValues,
 	RichText,
 } from '@wordpress/block-editor';
-import {
-	select,
-} from '@wordpress/data';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -52,7 +50,15 @@ const deprecated = [
 	{
 		attributes: blockAttributes,
 		save( { attributes } ) {
-			const { mainColor, customMainColor, textColor, customTextColor, value, citation, className } = attributes;
+			const {
+				mainColor,
+				customMainColor,
+				textColor,
+				customTextColor,
+				value,
+				citation,
+				className,
+			} = attributes;
 			const isSolidColorStyle = includes( className, SOLID_COLOR_CLASS );
 
 			let figureClass, figureStyles;
@@ -80,15 +86,20 @@ const deprecated = [
 			}
 
 			const blockquoteTextColorClass = getColorClassName( 'color', textColor );
-			const blockquoteClasses = textColor || customTextColor ? classnames( 'has-text-color', {
-				[ blockquoteTextColorClass ]: blockquoteTextColorClass,
-			} ) : undefined;
+			const blockquoteClasses =
+				textColor || customTextColor
+					? classnames( 'has-text-color', {
+							[ blockquoteTextColorClass ]: blockquoteTextColorClass,
+					  } )
+					: undefined;
 			const blockquoteStyle = blockquoteTextColorClass ? undefined : { color: customTextColor };
 			return (
 				<figure className={ figureClass } style={ figureStyles }>
-					<blockquote className={ blockquoteClasses } style={ blockquoteStyle } >
+					<blockquote className={ blockquoteClasses } style={ blockquoteStyle }>
 						<RichText.Content value={ value } multiline />
-						{ ! RichText.isEmpty( citation ) && <RichText.Content tagName="cite" value={ citation } /> }
+						{ ! RichText.isEmpty( citation ) && (
+							<RichText.Content tagName="cite" value={ citation } />
+						) }
 					</blockquote>
 				</figure>
 			);
@@ -103,11 +114,14 @@ const deprecated = [
 			return (
 				<blockquote>
 					<RichText.Content value={ value } multiline />
-					{ ! RichText.isEmpty( citation ) && <RichText.Content tagName="cite" value={ citation } /> }
+					{ ! RichText.isEmpty( citation ) && (
+						<RichText.Content tagName="cite" value={ citation } />
+					) }
 				</blockquote>
 			);
 		},
-	}, {
+	},
+	{
 		attributes: {
 			...blockAttributes,
 			citation: {
@@ -127,7 +141,9 @@ const deprecated = [
 			return (
 				<blockquote className={ `align${ align }` }>
 					<RichText.Content value={ value } multiline />
-					{ ! RichText.isEmpty( citation ) && <RichText.Content tagName="footer" value={ citation } /> }
+					{ ! RichText.isEmpty( citation ) && (
+						<RichText.Content tagName="footer" value={ citation } />
+					) }
 				</blockquote>
 			);
 		},

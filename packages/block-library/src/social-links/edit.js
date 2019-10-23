@@ -2,9 +2,7 @@
  * WordPress dependencies
  */
 
-import {
-	InnerBlocks,
-} from '@wordpress/block-editor';
+import { InnerBlocks } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -28,11 +26,7 @@ const TEMPLATE = [
 export const SocialLinksEdit = function( { className } ) {
 	return (
 		<div className={ className }>
-			<InnerBlocks
-				allowedBlocks={ ALLOWED_BLOCKS }
-				templateLock={ false }
-				template={ TEMPLATE }
-			/>
+			<InnerBlocks allowedBlocks={ ALLOWED_BLOCKS } templateLock={ false } template={ TEMPLATE } />
 		</div>
 	);
 };

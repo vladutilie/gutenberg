@@ -1,8 +1,4 @@
-module.exports = function createDockerComposeConfig(
-	pluginPath,
-	pluginName,
-	pluginTestsPath
-) {
+module.exports = function createDockerComposeConfig( pluginPath, pluginName, pluginTestsPath ) {
 	const commonVolumes = `
       - ${ pluginPath }/:/var/www/html/wp-content/plugins/${ pluginName }/
       - ${ pluginPath }${ pluginTestsPath }/e2e-tests/mu-plugins/:/var/www/html/wp-content/mu-plugins/

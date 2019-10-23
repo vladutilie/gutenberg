@@ -143,7 +143,8 @@ export class Hue extends Component {
 						ref={ this.container }
 						onMouseDown={ this.handleMouseDown }
 						onTouchMove={ this.handleChange }
-						onTouchStart={ this.handleChange }>
+						onTouchStart={ this.handleChange }
+					>
 						<div
 							tabIndex="0"
 							role="slider"

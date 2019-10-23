@@ -25,26 +25,21 @@ import {
 } from '@wordpress/block-editor';
 import { memo } from '@wordpress/element';
 
-const HeadingColorUI = memo(
-	function( {
-		textColorValue,
-		setTextColor,
-	} ) {
-		return (
-			<PanelColorSettings
-				title={ __( 'Color Settings' ) }
-				initialOpen={ false }
-				colorSettings={ [
-					{
-						value: textColorValue,
-						onChange: setTextColor,
-						label: __( 'Text Color' ),
-					},
-				] }
-			/>
-		);
-	}
-);
+const HeadingColorUI = memo( function( { textColorValue, setTextColor } ) {
+	return (
+		<PanelColorSettings
+			title={ __( 'Color Settings' ) }
+			initialOpen={ false }
+			colorSettings={ [
+				{
+					value: textColorValue,
+					onChange: setTextColor,
+					label: __( 'Text Color' ),
+				},
+			] }
+		/>
+	);
+} );
 
 function HeadingEdit( {
 	attributes,
@@ -61,20 +56,31 @@ function HeadingEdit( {
 	return (
 		<>
 			<BlockControls>
-				<HeadingToolbar minLevel={ 2 } maxLevel={ 5 } selectedLevel={ level } onChange={ ( newLevel ) => setAttributes( { level: newLevel } ) } />
-				<AlignmentToolbar value={ align } onChange={ ( nextAlign ) => {
-					setAttributes( { align: nextAlign } );
-				} } />
+				<HeadingToolbar
+					minLevel={ 2 }
+					maxLevel={ 5 }
+					selectedLevel={ level }
+					onChange={ ( newLevel ) => setAttributes( { level: newLevel } ) }
+				/>
+				<AlignmentToolbar
+					value={ align }
+					onChange={ ( nextAlign ) => {
+						setAttributes( { align: nextAlign } );
+					} }
+				/>
 			</BlockControls>
 			<InspectorControls>
 				<PanelBody title={ __( 'Heading Settings' ) }>
 					<p>{ __( 'Level' ) }</p>
-					<HeadingToolbar isCollapsed={ false } minLevel={ 1 } maxLevel={ 7 } selectedLevel={ level } onChange={ ( newLevel ) => setAttributes( { level: newLevel } ) } />
+					<HeadingToolbar
+						isCollapsed={ false }
+						minLevel={ 1 }
+						maxLevel={ 7 }
+						selectedLevel={ level }
+						onChange={ ( newLevel ) => setAttributes( { level: newLevel } ) }
+					/>
 				</PanelBody>
-				<HeadingColorUI
-					setTextColor={ setTextColor }
-					textColorValue={ textColor.color }
-				/>
+				<HeadingColorUI setTextColor={ setTextColor } textColorValue={ textColor.color } />
 			</InspectorControls>
 			<RichText
 				identifier="content"
@@ -108,6 +114,6 @@ function HeadingEdit( {
 	);
 }
 
-export default compose( [
-	withColors( 'backgroundColor', { textColor: 'color' } ),
-] )( HeadingEdit );
+export default compose( [ withColors( 'backgroundColor', { textColor: 'color' } ) ] )(
+	HeadingEdit
+);

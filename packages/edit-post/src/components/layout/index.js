@@ -124,9 +124,7 @@ function Layout( {
 					</div>
 					<SettingsSidebar />
 					<Sidebar.Slot />
-					{
-						isMobileViewport && sidebarIsOpened && <ScrollLock />
-					}
+					{ isMobileViewport && sidebarIsOpened && <ScrollLock /> }
 				</>
 			) }
 			<Popover.Slot />
@@ -154,5 +152,5 @@ export default compose(
 		};
 	} ),
 	navigateRegions,
-	withViewportMatch( { isMobileViewport: '< small' } ),
+	withViewportMatch( { isMobileViewport: '< small' } )
 )( Layout );

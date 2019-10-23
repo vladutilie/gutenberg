@@ -1,10 +1,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	__experimentalAsyncModeProvider as AsyncModeProvider,
-	useSelect,
-} from '@wordpress/data';
+import { __experimentalAsyncModeProvider as AsyncModeProvider, useSelect } from '@wordpress/data';
 
 const BlockAsyncModeProvider = ( { children, clientId, isBlockInSelection } ) => {
 	const isParentOfSelectedBlock = useSelect( ( select ) => {
@@ -13,11 +10,7 @@ const BlockAsyncModeProvider = ( { children, clientId, isBlockInSelection } ) =>
 
 	const isSyncModeForced = isBlockInSelection || isParentOfSelectedBlock;
 
-	return (
-		<AsyncModeProvider value={ ! isSyncModeForced }>
-			{ children }
-		</AsyncModeProvider>
-	);
+	return <AsyncModeProvider value={ ! isSyncModeForced }>{ children }</AsyncModeProvider>;
 };
 
 export default BlockAsyncModeProvider;

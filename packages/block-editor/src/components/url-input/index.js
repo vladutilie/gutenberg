@@ -91,35 +91,43 @@ class URLInput extends Component {
 
 		const request = fetchLinkSuggestions( value );
 
-		request.then( ( suggestions ) => {
-			// A fetch Promise doesn't have an abort option. It's mimicked by
-			// comparing the request reference in on the instance, which is
-			// reset or deleted on subsequent requests or unmounting.
-			if ( this.suggestionsRequest !== request ) {
-				return;
-			}
+		request
+			.then( ( suggestions ) => {
+				// A fetch Promise doesn't have an abort option. It's mimicked by
+				// comparing the request reference in on the instance, which is
+				// reset or deleted on subsequent requests or unmounting.
+				if ( this.suggestionsRequest !== request ) {
+					return;
+				}
 
-			this.setState( {
-				suggestions,
-				loading: false,
-			} );
-
-			if ( !! suggestions.length ) {
-				this.props.debouncedSpeak( sprintf( _n(
-					'%d result found, use up and down arrow keys to navigate.',
-					'%d results found, use up and down arrow keys to navigate.',
-					suggestions.length
-				), suggestions.length ), 'assertive' );
-			} else {
-				this.props.debouncedSpeak( __( 'No results.' ), 'assertive' );
-			}
-		} ).catch( () => {
-			if ( this.suggestionsRequest === request ) {
 				this.setState( {
+					suggestions,
 					loading: false,
 				} );
-			}
-		} );
+
+				if ( !! suggestions.length ) {
+					this.props.debouncedSpeak(
+						sprintf(
+							_n(
+								'%d result found, use up and down arrow keys to navigate.',
+								'%d results found, use up and down arrow keys to navigate.',
+								suggestions.length
+							),
+							suggestions.length
+						),
+						'assertive'
+					);
+				} else {
+					this.props.debouncedSpeak( __( 'No results.' ), 'assertive' );
+				}
+			} )
+			.catch( () => {
+				if ( this.suggestionsRequest === request ) {
+					this.setState( {
+						loading: false,
+					} );
+				}
+			} );
 
 		this.suggestionsRequest = request;
 	}
@@ -176,7 +184,9 @@ class URLInput extends Component {
 			case UP: {
 				event.stopPropagation();
 				event.preventDefault();
-				const previousIndex = ! selectedSuggestion ? suggestions.length - 1 : selectedSuggestion - 1;
+				const previousIndex = ! selectedSuggestion
+					? suggestions.length - 1
+					: selectedSuggestion - 1;
 				this.setState( {
 					selectedSuggestion: previousIndex,
 				} );
@@ -185,7 +195,10 @@ class URLInput extends Component {
 			case DOWN: {
 				event.stopPropagation();
 				event.preventDefault();
-				const nextIndex = selectedSuggestion === null || ( selectedSuggestion === suggestions.length - 1 ) ? 0 : selectedSuggestion + 1;
+				const nextIndex =
+					selectedSuggestion === null || selectedSuggestion === suggestions.length - 1
+						? 0
+						: selectedSuggestion + 1;
 				this.setState( {
 					selectedSuggestion: nextIndex,
 				} );
@@ -230,7 +243,15 @@ class URLInput extends Component {
 	}
 
 	render() {
-		const { value = '', autoFocus = true, instanceId, className, id, isFullWidth, hasBorder } = this.props;
+		const {
+			value = '',
+			autoFocus = true,
+			instanceId,
+			className,
+			id,
+			isFullWidth,
+			hasBorder,
+		} = this.props;
 		const { showSuggestions, suggestions, selectedSuggestion, loading } = this.state;
 
 		const suggestionsListboxId = `block-editor-url-input-suggestions-${ instanceId }`;
@@ -238,10 +259,12 @@ class URLInput extends Component {
 
 		/* eslint-disable jsx-a11y/no-autofocus */
 		return (
-			<div className={ classnames( 'editor-url-input block-editor-url-input', className, {
-				'is-full-width': isFullWidth,
-				'has-border': hasBorder,
-			} ) }>
+			<div
+				className={ classnames( 'editor-url-input block-editor-url-input', className, {
+					'is-full-width': isFullWidth,
+					'has-border': hasBorder,
+				} ) }
+			>
 				<input
 					id={ id }
 					autoFocus={ autoFocus }
@@ -257,18 +280,18 @@ class URLInput extends Component {
 					aria-expanded={ showSuggestions }
 					aria-autocomplete="list"
 					aria-owns={ suggestionsListboxId }
-					aria-activedescendant={ selectedSuggestion !== null ? `${ suggestionOptionIdPrefix }-${ selectedSuggestion }` : undefined }
+					aria-activedescendant={
+						selectedSuggestion !== null
+							? `${ suggestionOptionIdPrefix }-${ selectedSuggestion }`
+							: undefined
+					}
 					ref={ this.inputRef }
 				/>
 
-				{ ( loading ) && <Spinner /> }
+				{ loading && <Spinner /> }
 
-				{ showSuggestions && !! suggestions.length &&
-					<Popover
-						position="bottom"
-						noArrow
-						focusOnMount={ false }
-					>
+				{ showSuggestions && !! suggestions.length && (
+					<Popover position="bottom" noArrow focusOnMount={ false }>
 						<div
 							className={ classnames(
 								'editor-url-input__suggestions',
@@ -286,9 +309,12 @@ class URLInput extends Component {
 									tabIndex="-1"
 									id={ `${ suggestionOptionIdPrefix }-${ index }` }
 									ref={ this.bindSuggestionNode( index ) }
-									className={ classnames( 'editor-url-input__suggestion block-editor-url-input__suggestion', {
-										'is-selected': index === selectedSuggestion,
-									} ) }
+									className={ classnames(
+										'editor-url-input__suggestion block-editor-url-input__suggestion',
+										{
+											'is-selected': index === selectedSuggestion,
+										}
+									) }
 									onClick={ () => this.handleOnClick( suggestion ) }
 									aria-selected={ index === selectedSuggestion }
 								>
@@ -297,7 +323,7 @@ class URLInput extends Component {
 							) ) }
 						</div>
 					</Popover>
-				}
+				) }
 			</div>
 		);
 		/* eslint-enable jsx-a11y/no-autofocus */

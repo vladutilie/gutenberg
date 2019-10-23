@@ -41,10 +41,7 @@ export const SETTINGS_DEFAULTS = {
 			slug: 'pale-pink',
 			color: '#f78da7',
 		},
-		{	name: __( 'Vivid red' ),
-			slug: 'vivid-red',
-			color: '#cf2e2e',
-		},
+		{ name: __( 'Vivid red' ), slug: 'vivid-red', color: '#cf2e2e' },
 		{
 			name: __( 'Luminous vivid orange' ),
 			slug: 'luminous-vivid-orange',
@@ -180,7 +177,8 @@ export const SETTINGS_DEFAULTS = {
 		// The following use new, customized colors.
 		{
 			name: __( 'Cool to warm spectrum' ),
-			gradient: 'linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%)',
+			gradient:
+				'linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%)',
 		},
 		{
 			name: __( 'Blush light purple' ),
@@ -192,11 +190,13 @@ export const SETTINGS_DEFAULTS = {
 		},
 		{
 			name: __( 'Purple crush' ),
-			gradient: 'linear-gradient(135deg,rgb(52,226,228) 0%,rgb(71,33,251) 50%,rgb(171,29,254) 100%)',
+			gradient:
+				'linear-gradient(135deg,rgb(52,226,228) 0%,rgb(71,33,251) 50%,rgb(171,29,254) 100%)',
 		},
 		{
 			name: __( 'Luminous dusk' ),
-			gradient: 'linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%)',
+			gradient:
+				'linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%)',
 		},
 		{
 			name: __( 'Hazy dawn' ),
@@ -204,7 +204,8 @@ export const SETTINGS_DEFAULTS = {
 		},
 		{
 			name: __( 'Pale ocean' ),
-			gradient: 'linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%)',
+			gradient:
+				'linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%)',
 		},
 		{
 			name: __( 'Electric grass' ),
@@ -228,4 +229,3 @@ export const SETTINGS_DEFAULTS = {
 		},
 	],
 };
-

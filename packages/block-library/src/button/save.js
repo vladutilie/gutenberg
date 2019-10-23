@@ -6,10 +6,7 @@ import classnames from 'classnames';
 /**
  * WordPress dependencies
  */
-import {
-	RichText,
-	getColorClassName,
-} from '@wordpress/block-editor';
+import { RichText, getColorClassName } from '@wordpress/block-editor';
 
 export default function save( { attributes } ) {
 	const {
@@ -27,7 +24,8 @@ export default function save( { attributes } ) {
 	} = attributes;
 
 	const textClass = getColorClassName( 'color', textColor );
-	const backgroundClass = ! customGradient && getColorClassName( 'background-color', backgroundColor );
+	const backgroundClass =
+		! customGradient && getColorClassName( 'background-color', backgroundColor );
 
 	const buttonClasses = classnames( 'wp-block-button__link', {
 		'has-text-color': textColor || customTextColor,

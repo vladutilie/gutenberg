@@ -72,7 +72,7 @@ const PluginPrePublishPanel = compose(
 		return {
 			icon: ownProps.icon || context.icon,
 		};
-	} ),
+	} )
 )( PluginPrePublishPanelFill );
 
 PluginPrePublishPanel.Slot = Slot;

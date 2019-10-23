@@ -25,10 +25,7 @@ export default function BottomSheetRangeCell( props ) {
 	} = props;
 
 	return (
-		<Cell
-			editable={ false }
-			{ ...cellProps }
-		>
+		<Cell editable={ false } { ...cellProps }>
 			<Slider
 				value={ value }
 				defaultValue={ defaultValue }

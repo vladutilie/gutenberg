@@ -1,13 +1,7 @@
 /**
  * External dependencies
  */
-import {
-	findLast,
-	invert,
-	mapValues,
-	sortBy,
-	throttle,
-} from 'lodash';
+import { findLast, invert, mapValues, sortBy, throttle } from 'lodash';
 import classnames from 'classnames';
 
 /**
@@ -124,8 +118,10 @@ class BlockList extends Component {
 		const boundaries = this.nodes[ clientId ].getBoundingClientRect();
 
 		// Create a clientId to Y coördinate map.
-		const clientIdToCoordMap = mapValues( this.nodes, ( node ) =>
-			node.getBoundingClientRect().top - boundaries.top );
+		const clientIdToCoordMap = mapValues(
+			this.nodes,
+			( node ) => node.getBoundingClientRect().top - boundaries.top
+		);
 
 		// Cache a Y coördinate to clientId map for use in `onPointerMove`.
 		this.coordMap = invert( clientIdToCoordMap );
@@ -204,16 +200,16 @@ class BlockList extends Component {
 		} = this.props;
 
 		return (
-			<div className={
-				classnames(
+			<div
+				className={ classnames(
 					'editor-block-list__layout block-editor-block-list__layout',
 					className
-				)
-			}>
+				) }
+			>
 				{ blockClientIds.map( ( clientId, index ) => {
-					const isBlockInSelection = hasMultiSelection ?
-						multiSelectedBlockClientIds.includes( clientId ) :
-						selectedBlockClientId === clientId;
+					const isBlockInSelection = hasMultiSelection
+						? multiSelectedBlockClientIds.includes( clientId )
+						: selectedBlockClientId === clientId;
 
 					return (
 						<BlockAsyncModeProvider
@@ -227,7 +223,6 @@ class BlockList extends Component {
 								blockRef={ this.setBlockRef }
 								onSelectionStart={ this.onSelectionStart }
 								isDraggable={ isDraggable }
-
 								// This prop is explicitely computed and passed down
 								// to avoid being impacted by the async mode
 								// otherwise there might be a small delay to trigger the animation.
@@ -238,10 +233,7 @@ class BlockList extends Component {
 					);
 				} ) }
 
-				<BlockListAppender
-					rootClientId={ rootClientId }
-					renderAppender={ renderAppender }
-				/>
+				<BlockListAppender rootClientId={ rootClientId } renderAppender={ renderAppender } />
 			</div>
 		);
 	}
@@ -277,18 +269,11 @@ export default compose( [
 			selectedBlockClientId: getSelectedBlockClientId(),
 			multiSelectedBlockClientIds: getMultiSelectedBlockClientIds(),
 			hasMultiSelection: hasMultiSelection(),
-			enableAnimation: (
-				! isTyping() &&
-				getGlobalBlockCount() <= BLOCK_ANIMATION_THRESHOLD
-			),
+			enableAnimation: ! isTyping() && getGlobalBlockCount() <= BLOCK_ANIMATION_THRESHOLD,
 		};
 	} ),
 	withDispatch( ( dispatch ) => {
-		const {
-			startMultiSelect,
-			stopMultiSelect,
-			multiSelect,
-		} = dispatch( 'core/block-editor' );
+		const { startMultiSelect, stopMultiSelect, multiSelect } = dispatch( 'core/block-editor' );
 
 		return {
 			onStartMultiSelect: startMultiSelect,

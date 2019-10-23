@@ -18,7 +18,7 @@ import { __, _n, sprintf } from '@wordpress/i18n';
  * @return {string} Label for the block movement controls.
  */
 export function getBlockMoverDescription( selectedCount, type, firstIndex, isFirst, isLast, dir ) {
-	const position = ( firstIndex + 1 );
+	const position = firstIndex + 1;
 
 	if ( selectedCount > 1 ) {
 		return getMultiBlockMoverDescription( selectedCount, firstIndex, isFirst, isLast, dir );
@@ -36,7 +36,7 @@ export function getBlockMoverDescription( selectedCount, type, firstIndex, isFir
 			__( 'Move %1$s block from position %2$d down to position %3$d' ),
 			type,
 			position,
-			( position + 1 )
+			position + 1
 		);
 	}
 
@@ -53,14 +53,17 @@ export function getBlockMoverDescription( selectedCount, type, firstIndex, isFir
 			__( 'Move %1$s block from position %2$d up to position %3$d' ),
 			type,
 			position,
-			( position - 1 )
+			position - 1
 		);
 	}
 
 	if ( dir < 0 && isFirst ) {
 		// moving up, and is the first item
 		// translators: %s: Type of block (i.e. Text, Image etc)
-		return sprintf( __( 'Block %s is at the beginning of the content and can’t be moved up' ), type );
+		return sprintf(
+			__( 'Block %s is at the beginning of the content and can’t be moved up' ),
+			type
+		);
 	}
 }
 
@@ -77,7 +80,7 @@ export function getBlockMoverDescription( selectedCount, type, firstIndex, isFir
  * @return {string} Label for the block movement controls.
  */
 export function getMultiBlockMoverDescription( selectedCount, firstIndex, isFirst, isLast, dir ) {
-	const position = ( firstIndex + 1 );
+	const position = firstIndex + 1;
 
 	if ( dir < 0 && isFirst ) {
 		return __( 'Blocks cannot be moved up as they are already at the top' );

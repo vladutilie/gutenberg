@@ -6,23 +6,10 @@ import classnames from 'classnames';
 /**
  * WordPress dependencies
  */
-import {
-	Fragment,
-	useMemo,
-} from '@wordpress/element';
-import {
-	InnerBlocks,
-	InspectorControls,
-	BlockControls,
-	withColors,
-} from '@wordpress/block-editor';
+import { Fragment, useMemo } from '@wordpress/element';
+import { InnerBlocks, InspectorControls, BlockControls, withColors } from '@wordpress/block-editor';
 import { withSelect } from '@wordpress/data';
-import {
-	CheckboxControl,
-	PanelBody,
-	Spinner,
-	Toolbar,
-} from '@wordpress/components';
+import { CheckboxControl, PanelBody, Spinner, Toolbar } from '@wordpress/components';
 import { compose } from '@wordpress/compose';
 
 import { __ } from '@wordpress/i18n';
@@ -45,17 +32,17 @@ function NavigationMenu( {
 	setTextColor,
 } ) {
 	const { navigatorToolbarButton, navigatorModal } = useBlockNavigator( clientId );
-	const defaultMenuItems = useMemo(
-		() => {
-			if ( ! pages ) {
-				return null;
-			}
-			return pages.map( ( page ) => {
-				return [ 'core/navigation-menu-item', { label: page.title.rendered, destination: page.permalink_template } ];
-			} );
-		},
-		[ pages ]
-	);
+	const defaultMenuItems = useMemo( () => {
+		if ( ! pages ) {
+			return null;
+		}
+		return pages.map( ( page ) => {
+			return [
+				'core/navigation-menu-item',
+				{ label: page.title.rendered, destination: page.permalink_template },
+			];
+		} );
+	}, [ pages ] );
 
 	const navigationMenuStyles = {};
 	if ( textColor.color ) {
@@ -66,12 +53,10 @@ function NavigationMenu( {
 		navigationMenuStyles[ '--background-color-menu-link' ] = backgroundColor.color;
 	}
 
-	const navigationMenuClasses = classnames(
-		'wp-block-navigation-menu', {
-			'has-text-color': textColor.color,
-			'has-background-color': backgroundColor.color,
-		}
-	);
+	const navigationMenuClasses = classnames( 'wp-block-navigation-menu', {
+		'has-text-color': textColor.color,
+		'has-background-color': backgroundColor.color,
+	} );
 
 	/**
 	 * Set the color type according to the given values.
@@ -106,9 +91,7 @@ function NavigationMenu( {
 	return (
 		<Fragment>
 			<BlockControls>
-				<Toolbar>
-					{ navigatorToolbarButton }
-				</Toolbar>
+				<Toolbar>{ navigatorToolbarButton }</Toolbar>
 				<BlockColorsStyleSelector
 					style={ navigationMenuStyles }
 					className={ navigationMenuClasses }
@@ -119,9 +102,7 @@ function NavigationMenu( {
 			</BlockControls>
 			{ navigatorModal }
 			<InspectorControls>
-				<PanelBody
-					title={ __( 'Menu Settings' ) }
-				>
+				<PanelBody title={ __( 'Menu Settings' ) }>
 					<CheckboxControl
 						value={ attributes.automaticallyAdd }
 						onChange={ ( automaticallyAdd ) => setAttributes( { automaticallyAdd } ) }
@@ -133,13 +114,13 @@ function NavigationMenu( {
 
 			<div className={ navigationMenuClasses } style={ navigationMenuStyles }>
 				{ isRequesting && <Spinner /> }
-				{ pages &&
+				{ pages && (
 					<InnerBlocks
 						template={ defaultMenuItems ? defaultMenuItems : null }
 						allowedBlocks={ [ 'core/navigation-menu-item' ] }
 						templateInsertUpdatesSelection={ false }
 					/>
-				}
+				) }
 			</div>
 		</Fragment>
 	);
@@ -157,7 +138,11 @@ export default compose( [
 		};
 		return {
 			pages: getEntityRecords( 'postType', 'page', filterDefaultPages ),
-			isRequesting: isResolving( 'core', 'getEntityRecords', [ 'postType', 'page', filterDefaultPages ] ),
+			isRequesting: isResolving( 'core', 'getEntityRecords', [
+				'postType',
+				'page',
+				filterDefaultPages,
+			] ),
 		};
 	} ),
 ] )( NavigationMenu );

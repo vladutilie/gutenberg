@@ -9,7 +9,12 @@ import { omit } from 'lodash';
  */
 import { RawHTML, Component, createRef } from '@wordpress/element';
 import { withDispatch, withSelect } from '@wordpress/data';
-import { pasteHandler, children as childrenSource, getBlockTransforms, findTransform } from '@wordpress/blocks';
+import {
+	pasteHandler,
+	children as childrenSource,
+	getBlockTransforms,
+	findTransform,
+} from '@wordpress/blocks';
 import { withInstanceId, compose } from '@wordpress/compose';
 import {
 	__experimentalRichText as RichText,
@@ -70,25 +75,17 @@ class RichTextWrapper extends Component {
 	}
 
 	onEnter( { value, onChange, shiftKey } ) {
-		const {
-			onReplace,
-			onSplit,
-			multiline,
-			markAutomaticChange,
-		} = this.props;
+		const { onReplace, onSplit, multiline, markAutomaticChange } = this.props;
 		const canSplit = onReplace && onSplit;
 
 		if ( onReplace ) {
-			const transforms = getBlockTransforms( 'from' )
-				.filter( ( { type } ) => type === 'enter' );
+			const transforms = getBlockTransforms( 'from' ).filter( ( { type } ) => type === 'enter' );
 			const transformation = findTransform( transforms, ( item ) => {
 				return item.regExp.test( value.text );
 			} );
 
 			if ( transformation ) {
-				onReplace( [
-					transformation.transform( { content: value.text } ),
-				] );
+				onReplace( [ transformation.transform( { content: value.text } ) ] );
 				markAutomaticChange();
 			}
 		}
@@ -156,11 +153,7 @@ class RichTextWrapper extends Component {
 
 		let mode = onReplace && onSplit ? 'AUTO' : 'INLINE';
 
-		if (
-			__unstableEmbedURLOnPaste &&
-			isEmpty( value ) &&
-			isURL( plainText.trim() )
-		) {
+		if ( __unstableEmbedURLOnPaste && isEmpty( value ) && isURL( plainText.trim() ) ) {
 			mode = 'BLOCKS';
 		}
 
@@ -201,12 +194,7 @@ class RichTextWrapper extends Component {
 	 * @param  {Array}  pastedBlocks The pasted blocks to insert, if any.
 	 */
 	onSplit( record, pastedBlocks = [] ) {
-		const {
-			onReplace,
-			onSplit,
-			__unstableOnSplitMiddle: onSplitMiddle,
-			multiline,
-		} = this.props;
+		const { onReplace, onSplit, __unstableOnSplitMiddle: onSplitMiddle, multiline } = this.props;
 
 		if ( ! onReplace || ! onSplit ) {
 			return;
@@ -222,10 +210,14 @@ class RichTextWrapper extends Component {
 		// We do not want a leading empty block on paste, but we do if split
 		// with e.g. the enter key.
 		if ( ! hasPastedBlocks || ! isEmpty( before ) ) {
-			blocks.push( onSplit( toHTMLString( {
-				value: before,
-				multilineTag,
-			} ) ) );
+			blocks.push(
+				onSplit(
+					toHTMLString( {
+						value: before,
+						multilineTag,
+					} )
+				)
+			);
 		}
 
 		if ( hasPastedBlocks ) {
@@ -239,10 +231,14 @@ class RichTextWrapper extends Component {
 		// `onSplitMiddle` prop, but if there is and the content is empty, the
 		// middle block is enough to set focus in.
 		if ( hasPastedBlocks || ! onSplitMiddle || ! isEmpty( after ) ) {
-			blocks.push( onSplit( toHTMLString( {
-				value: after,
-				multilineTag,
-			} ) ) );
+			blocks.push(
+				onSplit(
+					toHTMLString( {
+						value: after,
+						multilineTag,
+					} )
+				)
+			);
 		}
 
 		// If there are pasted blocks, set the selection to the last one.
@@ -268,8 +264,9 @@ class RichTextWrapper extends Component {
 		}
 
 		const trimmedTextBefore = text.slice( 0, start ).trim();
-		const prefixTransforms = getBlockTransforms( 'from' )
-			.filter( ( { type } ) => type === 'prefix' );
+		const prefixTransforms = getBlockTransforms( 'from' ).filter(
+			( { type } ) => type === 'prefix'
+		);
 		const transformation = findTransform( prefixTransforms, ( { prefix } ) => {
 			return trimmedTextBefore === prefix;
 		} );
@@ -385,9 +382,10 @@ class RichTextWrapper extends Component {
 		// Handle deprecated format.
 		if ( Array.isArray( originalValue ) ) {
 			adjustedValue = childrenSource.toHTML( originalValue );
-			adjustedOnChange = ( newValue ) => originalOnChange( childrenSource.fromDOM(
-				__unstableCreateElement( document, newValue ).childNodes
-			) );
+			adjustedOnChange = ( newValue ) =>
+				originalOnChange(
+					childrenSource.fromDOM( __unstableCreateElement( document, newValue ).childNodes )
+				);
 		}
 
 		const content = (
@@ -421,7 +419,7 @@ class RichTextWrapper extends Component {
 				__unstableDidAutomaticChange={ didAutomaticChange }
 				__unstableUndo={ undo }
 			>
-				{ ( { isSelected, value, onChange, Editable } ) =>
+				{ ( { isSelected, value, onChange, Editable } ) => (
 					<>
 						{ children && children( { value, onChange } ) }
 						{ isSelected && ! inlineToolbar && hasFormats && (
@@ -448,7 +446,7 @@ class RichTextWrapper extends Component {
 							onChange={ onChange }
 							isSelected={ isSelected }
 						>
-							{ ( { listBoxId, activeId, onKeyDown } ) =>
+							{ ( { listBoxId, activeId, onKeyDown } ) => (
 								<Editable
 									aria-autocomplete={ listBoxId ? 'list' : undefined }
 									aria-owns={ listBoxId }
@@ -457,10 +455,10 @@ class RichTextWrapper extends Component {
 									reversed={ reversed }
 									onKeyDown={ onKeyDown }
 								/>
-							}
+							) }
 						</Autocomplete>
 					</>
-				}
+				) }
 			</RichText>
 		);
 
@@ -472,23 +470,14 @@ class RichTextWrapper extends Component {
 			alternative: 'className prop or create your own wrapper div',
 		} );
 
-		return (
-			<div className={ classnames( wrapperClasses, wrapperClassName ) }>
-				{ content }
-			</div>
-		);
+		return <div className={ classnames( wrapperClasses, wrapperClassName ) }>{ content }</div>;
 	}
 }
 
 const RichTextContainer = compose( [
 	withInstanceId,
 	withBlockEditContext( ( { clientId } ) => ( { clientId } ) ),
-	withSelect( ( select, {
-		clientId,
-		instanceId,
-		identifier = instanceId,
-		isSelected,
-	} ) => {
+	withSelect( ( select, { clientId, instanceId, identifier = instanceId, isSelected } ) => {
 		const {
 			isCaretWithinFormattedText,
 			getSelectionStart,
@@ -501,10 +490,8 @@ const RichTextContainer = compose( [
 		const selectionEnd = getSelectionEnd();
 		const { __experimentalCanUserUseUnfilteredHTML } = getSettings();
 		if ( isSelected === undefined ) {
-			isSelected = (
-				selectionStart.clientId === clientId &&
-				selectionStart.attributeKey === identifier
-			);
+			isSelected =
+				selectionStart.clientId === clientId && selectionStart.attributeKey === identifier;
 		} else if ( isSelected ) {
 			isSelected = selectionStart.clientId === clientId;
 		}
@@ -518,11 +505,7 @@ const RichTextContainer = compose( [
 			didAutomaticChange: didAutomaticChange(),
 		};
 	} ),
-	withDispatch( ( dispatch, {
-		clientId,
-		instanceId,
-		identifier = instanceId,
-	} ) => {
+	withDispatch( ( dispatch, { clientId, instanceId, identifier = instanceId } ) => {
 		const {
 			__unstableMarkLastChangeAsPersistent,
 			enterFormattedText,

@@ -36,16 +36,18 @@ describe( 'RichText Native', () => {
 
 	describe( 'Adds new line on Enter', () => {
 		let newValue;
-		const wrapper = shallow( <RichText
-			rootTagsToEliminate={ [ 'p' ] }
-			value=""
-			onChange={ ( value ) => {
-				newValue = value;
-			} }
-			formatTypes={ [] }
-			onSelectionChange={ jest.fn() }
-			getStylesFromColorScheme={ getStylesFromColorScheme }
-		/> );
+		const wrapper = shallow(
+			<RichText
+				rootTagsToEliminate={ [ 'p' ] }
+				value=""
+				onChange={ ( value ) => {
+					newValue = value;
+				} }
+				formatTypes={ [] }
+				onSelectionChange={ jest.fn() }
+				getStylesFromColorScheme={ getStylesFromColorScheme }
+			/>
+		);
 
 		const event = {
 			nativeEvent: {

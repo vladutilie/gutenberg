@@ -44,7 +44,23 @@ export class BlockMover extends Component {
 	}
 
 	render() {
-		const { onMoveUp, onMoveDown, isFirst, isLast, isDraggable, onDragStart, onDragEnd, clientIds, blockElementId, blockType, firstIndex, isLocked, instanceId, isHidden, rootClientId } = this.props;
+		const {
+			onMoveUp,
+			onMoveDown,
+			isFirst,
+			isLast,
+			isDraggable,
+			onDragStart,
+			onDragEnd,
+			clientIds,
+			blockElementId,
+			blockType,
+			firstIndex,
+			isLocked,
+			instanceId,
+			isHidden,
+			rootClientId,
+		} = this.props;
 		const { isFocused } = this.state;
 		const blocksCount = castArray( clientIds ).length;
 		if ( isLocked || ( isFirst && isLast && ! rootClientId ) ) {
@@ -56,7 +72,11 @@ export class BlockMover extends Component {
 		// to an unfocused state (body as active element) without firing blur on,
 		// the rendering parent, leaving it unable to react to focus out.
 		return (
-			<div className={ classnames( 'editor-block-mover block-editor-block-mover', { 'is-visible': isFocused || ! isHidden } ) }>
+			<div
+				className={ classnames( 'editor-block-mover block-editor-block-mover', {
+					'is-visible': isFocused || ! isHidden,
+				} ) }
+			>
 				<IconButton
 					className="editor-block-mover__control block-editor-block-mover__control"
 					onClick={ isFirst ? null : onMoveUp }
@@ -86,29 +106,31 @@ export class BlockMover extends Component {
 					onFocus={ this.onFocus }
 					onBlur={ this.onBlur }
 				/>
-				<span id={ `block-editor-block-mover__up-description-${ instanceId }` } className="editor-block-mover__description block-editor-block-mover__description">
-					{
-						getBlockMoverDescription(
-							blocksCount,
-							blockType && blockType.title,
-							firstIndex,
-							isFirst,
-							isLast,
-							-1,
-						)
-					}
+				<span
+					id={ `block-editor-block-mover__up-description-${ instanceId }` }
+					className="editor-block-mover__description block-editor-block-mover__description"
+				>
+					{ getBlockMoverDescription(
+						blocksCount,
+						blockType && blockType.title,
+						firstIndex,
+						isFirst,
+						isLast,
+						-1
+					) }
 				</span>
-				<span id={ `block-editor-block-mover__down-description-${ instanceId }` } className="editor-block-mover__description block-editor-block-mover__description">
-					{
-						getBlockMoverDescription(
-							blocksCount,
-							blockType && blockType.title,
-							firstIndex,
-							isFirst,
-							isLast,
-							1,
-						)
-					}
+				<span
+					id={ `block-editor-block-mover__down-description-${ instanceId }` }
+					className="editor-block-mover__description block-editor-block-mover__description"
+				>
+					{ getBlockMoverDescription(
+						blocksCount,
+						blockType && blockType.title,
+						firstIndex,
+						isFirst,
+						isLast,
+						1
+					) }
 				</span>
 			</div>
 		);
@@ -117,7 +139,13 @@ export class BlockMover extends Component {
 
 export default compose(
 	withSelect( ( select, { clientIds } ) => {
-		const { getBlock, getBlockIndex, getTemplateLock, getBlockRootClientId, getBlockOrder } = select( 'core/block-editor' );
+		const {
+			getBlock,
+			getBlockIndex,
+			getTemplateLock,
+			getBlockRootClientId,
+			getBlockOrder,
+		} = select( 'core/block-editor' );
 		const normalizedClientIds = castArray( clientIds );
 		const firstClientId = first( normalizedClientIds );
 		const block = getBlock( firstClientId );
@@ -142,5 +170,5 @@ export default compose(
 			onMoveUp: partial( moveBlocksUp, clientIds, rootClientId ),
 		};
 	} ),
-	withInstanceId,
+	withInstanceId
 )( BlockMover );

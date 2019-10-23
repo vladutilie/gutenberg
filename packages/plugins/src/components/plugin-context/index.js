@@ -21,15 +21,13 @@ export { Provider as PluginContextProvider };
  *
  * @return {Component} Enhanced component with injected context as props.
  */
-export const withPluginContext = ( mapContextToProps ) => createHigherOrderComponent( ( OriginalComponent ) => {
-	return ( props ) => (
-		<Consumer>
-			{ ( context ) => (
-				<OriginalComponent
-					{ ...props }
-					{ ...mapContextToProps( context, props ) }
-				/>
-			) }
-		</Consumer>
-	);
-}, 'withPluginContext' );
+export const withPluginContext = ( mapContextToProps ) =>
+	createHigherOrderComponent( ( OriginalComponent ) => {
+		return ( props ) => (
+			<Consumer>
+				{ ( context ) => (
+					<OriginalComponent { ...props } { ...mapContextToProps( context, props ) } />
+				) }
+			</Consumer>
+		);
+	}, 'withPluginContext' );

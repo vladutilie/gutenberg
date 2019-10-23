@@ -175,9 +175,7 @@ export class Inputs extends Component {
 		} else if ( this.state.view === 'rgb' ) {
 			return (
 				<fieldset>
-					<legend className="screen-reader-text">
-						{ __( 'Color value in RGB' ) }
-					</legend>
+					<legend className="screen-reader-text">{ __( 'Color value in RGB' ) }</legend>
 					<div className="components-color-picker__inputs-fields">
 						<Input
 							source={ this.state.view }
@@ -228,9 +226,7 @@ export class Inputs extends Component {
 		} else if ( this.state.view === 'hsl' ) {
 			return (
 				<fieldset>
-					<legend className="screen-reader-text">
-						{ __( 'Color value in HSL' ) }
-					</legend>
+					<legend className="screen-reader-text">{ __( 'Color value in HSL' ) }</legend>
 					<div className="components-color-picker__inputs-fields">
 						<Input
 							source={ this.state.view }

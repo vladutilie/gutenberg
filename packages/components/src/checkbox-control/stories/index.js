@@ -17,13 +17,7 @@ export default { title: 'Checkbox Control', component: CheckboxControl };
 
 export const _default = () => {
 	const [ isChecked, setChecked ] = useState( true );
-	return (
-		<CheckboxControl
-			label="Is author"
-			checked={ isChecked }
-			onChange={ setChecked }
-		/>
-	);
+	return <CheckboxControl label="Is author" checked={ isChecked } onChange={ setChecked } />;
 };
 
 export const All = () => {

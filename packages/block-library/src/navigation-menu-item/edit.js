@@ -18,16 +18,8 @@ import {
 	ToggleControl,
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import {
-	InnerBlocks,
-	InspectorControls,
-	PlainText,
-} from '@wordpress/block-editor';
-import {
-	Fragment,
-	useCallback,
-	useRef,
-} from '@wordpress/element';
+import { InnerBlocks, InspectorControls, PlainText } from '@wordpress/block-editor';
+import { Fragment, useCallback, useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -85,17 +77,13 @@ function NavigationMenuItemEdit( {
 			</div>
 		);
 	} else {
-		content = <div className="wp-block-navigation-menu-item__container">
-			{ attributes.label }
-		</div>;
+		content = <div className="wp-block-navigation-menu-item__container">{ attributes.label }</div>;
 	}
 
 	return (
 		<Fragment>
 			<InspectorControls>
-				<PanelBody
-					title={ __( 'Menu Settings' ) }
-				>
+				<PanelBody title={ __( 'Menu Settings' ) }>
 					<ToggleControl
 						checked={ attributes.opensInNewTab }
 						onChange={ ( opensInNewTab ) => {
@@ -111,9 +99,7 @@ function NavigationMenuItemEdit( {
 						label={ __( 'Description' ) }
 					/>
 				</PanelBody>
-				<PanelBody
-					title={ __( 'SEO Settings' ) }
-				>
+				<PanelBody title={ __( 'SEO Settings' ) }>
 					<TextControl
 						value={ attributes.title || '' }
 						onChange={ ( title ) => {
@@ -128,32 +114,30 @@ function NavigationMenuItemEdit( {
 							setAttributes( { nofollow } );
 						} }
 						label={ __( 'Add nofollow to menu item' ) }
-						help={ (
+						help={
 							<Fragment>
-								{ __( 'Don\'t let search engines follow this link.' ) }
+								{ __( "Don't let search engines follow this link." ) }
 								<ExternalLink
 									className="wp-block-navigation-menu-item__nofollow-external-link"
 									href={ __( 'https://codex.wordpress.org/Nofollow' ) }
 								>
-									{ __( 'What\'s this?' ) }
+									{ __( "What's this?" ) }
 								</ExternalLink>
 							</Fragment>
-						) }
+						}
 					/>
 				</PanelBody>
 			</InspectorControls>
-			<div className={ classnames(
-				'wp-block-navigation-menu-item', {
+			<div
+				className={ classnames( 'wp-block-navigation-menu-item', {
 					'is-editing': isSelected || isParentOfSelectedBlock,
 					'is-selected': isSelected,
 				} ) }
 			>
 				{ content }
-				{ ( isSelected || isParentOfSelectedBlock ) &&
-					<InnerBlocks
-						allowedBlocks={ [ 'core/navigation-menu-item' ] }
-					/>
-				}
+				{ ( isSelected || isParentOfSelectedBlock ) && (
+					<InnerBlocks allowedBlocks={ [ 'core/navigation-menu-item' ] } />
+				) }
 			</div>
 		</Fragment>
 	);

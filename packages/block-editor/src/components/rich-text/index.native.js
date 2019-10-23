@@ -83,7 +83,7 @@ function RichTextWraper( {
 			__unstableCanUserUseUnfilteredHTML={ canUserUseUnfilteredHTML }
 			__unstableOnCreateUndoLevel={ onCreateUndoLevel }
 		>
-			{ ( { isSelected, value, onChange } ) =>
+			{ ( { isSelected, value, onChange } ) => (
 				<View>
 					{ children && children( { value, onChange } ) }
 					{ isSelected && ! inlineToolbar && (
@@ -92,7 +92,7 @@ function RichTextWraper( {
 						</BlockFormatControls>
 					) }
 				</View>
-			}
+			) }
 		</RichText>
 	);
 }
@@ -106,54 +106,41 @@ const RichTextContainer = compose( [
 			onCaretVerticalPositionChange,
 		};
 	} ),
-	withSelect( ( select, {
-		clientId,
-		instanceId,
-		identifier = instanceId,
-		isSelected,
-		blockIsSelected,
-	} ) => {
-		const { getFormatTypes } = select( 'core/rich-text' );
-		const {
-			getSelectionStart,
-			getSelectionEnd,
-			__unstableGetBlockWithoutInnerBlocks,
-		} = select( 'core/block-editor' );
-
-		const selectionStart = getSelectionStart();
-		const selectionEnd = getSelectionEnd();
-
-		if ( isSelected === undefined ) {
-			isSelected = (
-				selectionStart.clientId === clientId &&
-				selectionStart.attributeKey === identifier
+	withSelect(
+		( select, { clientId, instanceId, identifier = instanceId, isSelected, blockIsSelected } ) => {
+			const { getFormatTypes } = select( 'core/rich-text' );
+			const { getSelectionStart, getSelectionEnd, __unstableGetBlockWithoutInnerBlocks } = select(
+				'core/block-editor'
 			);
+
+			const selectionStart = getSelectionStart();
+			const selectionEnd = getSelectionEnd();
+
+			if ( isSelected === undefined ) {
+				isSelected =
+					selectionStart.clientId === clientId && selectionStart.attributeKey === identifier;
+			}
+
+			// If the block of this RichText is unmodified then it's a candidate for replacing when adding a new block.
+			// In order to fix https://github.com/wordpress-mobile/gutenberg-mobile/issues/1126, let's blur on unmount in that case.
+			// This apparently assumes functionality the BlockHlder actually
+			const block = clientId && __unstableGetBlockWithoutInnerBlocks( clientId );
+			const shouldBlurOnUnmount = block && isSelected && isUnmodifiedDefaultBlock( block );
+
+			return {
+				formatTypes: getFormatTypes(),
+				selectionStart: isSelected ? selectionStart.offset : undefined,
+				selectionEnd: isSelected ? selectionEnd.offset : undefined,
+				isSelected,
+				blockIsSelected,
+				shouldBlurOnUnmount,
+			};
 		}
-
-		// If the block of this RichText is unmodified then it's a candidate for replacing when adding a new block.
-		// In order to fix https://github.com/wordpress-mobile/gutenberg-mobile/issues/1126, let's blur on unmount in that case.
-		// This apparently assumes functionality the BlockHlder actually
-		const block = clientId && __unstableGetBlockWithoutInnerBlocks( clientId );
-		const shouldBlurOnUnmount = block && isSelected && isUnmodifiedDefaultBlock( block );
-
-		return {
-			formatTypes: getFormatTypes(),
-			selectionStart: isSelected ? selectionStart.offset : undefined,
-			selectionEnd: isSelected ? selectionEnd.offset : undefined,
-			isSelected,
-			blockIsSelected,
-			shouldBlurOnUnmount,
-		};
-	} ),
-	withDispatch( ( dispatch, {
-		clientId,
-		instanceId,
-		identifier = instanceId,
-	} ) => {
-		const {
-			__unstableMarkLastChangeAsPersistent,
-			selectionChange,
-		} = dispatch( 'core/block-editor' );
+	),
+	withDispatch( ( dispatch, { clientId, instanceId, identifier = instanceId } ) => {
+		const { __unstableMarkLastChangeAsPersistent, selectionChange } = dispatch(
+			'core/block-editor'
+		);
 
 		return {
 			onCreateUndoLevel: __unstableMarkLastChangeAsPersistent,

@@ -51,21 +51,14 @@ class PullQuoteEdit extends Component {
 	}
 
 	render() {
-		const {
-			attributes,
-			mainColor,
-			textColor,
-			setAttributes,
-			isSelected,
-			className,
-		} = this.props;
+		const { attributes, mainColor, textColor, setAttributes, isSelected, className } = this.props;
 
 		const { value, citation } = attributes;
 
 		const isSolidColorStyle = includes( className, SOLID_COLOR_CLASS );
-		const figureStyles = isSolidColorStyle ?
-			{ backgroundColor: mainColor.color } :
-			{ borderColor: mainColor.color };
+		const figureStyles = isSolidColorStyle
+			? { backgroundColor: mainColor.color }
+			: { borderColor: mainColor.color };
 
 		const figureClasses = classnames( className, {
 			'has-background': isSolidColorStyle && mainColor.color,
@@ -76,10 +69,8 @@ class PullQuoteEdit extends Component {
 			color: textColor.color,
 		};
 
-		const blockquoteClasses = textColor.color && classnames(
-			'has-text-color',
-			{ [ textColor.class ]: textColor.class }
-		);
+		const blockquoteClasses =
+			textColor.color && classnames( 'has-text-color', { [ textColor.class ]: textColor.class } );
 
 		return (
 			<>
@@ -88,8 +79,8 @@ class PullQuoteEdit extends Component {
 						<RichText
 							multiline
 							value={ value }
-							onChange={
-								( nextValue ) => setAttributes( {
+							onChange={ ( nextValue ) =>
+								setAttributes( {
 									value: nextValue,
 								} )
 							}
@@ -105,8 +96,8 @@ class PullQuoteEdit extends Component {
 									// translators: placeholder text used for the citation
 									__( 'Write citation…' )
 								}
-								onChange={
-									( nextCitation ) => setAttributes( {
+								onChange={ ( nextCitation ) =>
+									setAttributes( {
 										citation: nextCitation,
 									} )
 								}
@@ -147,6 +138,4 @@ class PullQuoteEdit extends Component {
 	}
 }
 
-export default withColors( { mainColor: 'background-color', textColor: 'color' } )(
-	PullQuoteEdit
-);
+export default withColors( { mainColor: 'background-color', textColor: 'color' } )( PullQuoteEdit );

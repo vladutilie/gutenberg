@@ -54,10 +54,7 @@ class Inserter extends Component {
 	 * @return {WPElement} Dropdown toggle element.
 	 */
 	renderToggle( { onToggle, isOpen } ) {
-		const {
-			disabled,
-			renderToggle = defaultRenderToggle,
-		} = this.props;
+		const { disabled, renderToggle = defaultRenderToggle } = this.props;
 
 		return renderToggle( { onToggle, isOpen, disabled } );
 	}

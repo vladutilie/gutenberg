@@ -1,22 +1,10 @@
 /**
  * WordPress dependencies
  */
-import {
-	useState,
-} from '@wordpress/element';
-import {
-	useSelect,
-	useDispatch,
-} from '@wordpress/data';
-import {
-	__experimentalBlockNavigationList,
-} from '@wordpress/block-editor';
-import {
-	IconButton,
-	SVG,
-	Path,
-	Modal,
-} from '@wordpress/components';
+import { useState } from '@wordpress/element';
+import { useSelect, useDispatch } from '@wordpress/data';
+import { __experimentalBlockNavigationList } from '@wordpress/block-editor';
+import { IconButton, SVG, Path, Modal } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
 const NavigatorIcon = (
@@ -28,24 +16,19 @@ const NavigatorIcon = (
 export default function useBlockNavigator( clientId ) {
 	const [ isNavigationListOpen, setIsNavigationListOpen ] = useState( false );
 
-	const {
-		block,
-		selectedBlockClientId,
-	} = useSelect( ( select ) => {
-		const {
-			getSelectedBlockClientId,
-			getBlock,
-		} = select( 'core/block-editor' );
+	const { block, selectedBlockClientId } = useSelect(
+		( select ) => {
+			const { getSelectedBlockClientId, getBlock } = select( 'core/block-editor' );
 
-		return {
-			block: getBlock( clientId ),
-			selectedBlockClientId: getSelectedBlockClientId(),
-		};
-	}, [ clientId ] );
+			return {
+				block: getBlock( clientId ),
+				selectedBlockClientId: getSelectedBlockClientId(),
+			};
+		},
+		[ clientId ]
+	);
 
-	const {
-		selectBlock,
-	} = useDispatch( 'core/block-editor' );
+	const { selectBlock } = useDispatch( 'core/block-editor' );
 
 	const navigatorToolbarButton = (
 		<IconButton

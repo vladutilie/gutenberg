@@ -21,12 +21,14 @@ class Slider extends Component {
 		this.handleValueSave = this.handleValueSave.bind( this );
 		this.handleReset = this.handleReset.bind( this );
 
-		const initialValue = this.validateInput( props.value || props.defaultValue || props.minimumValue );
+		const initialValue = this.validateInput(
+			props.value || props.defaultValue || props.minimumValue
+		);
 
 		this.state = { hasFocus: false, initialValue, sliderValue: initialValue };
 	}
 
-	componentDidUpdate( ) {
+	componentDidUpdate() {
 		const reset = this.props.value === null;
 		if ( reset ) {
 			this.handleReset();
@@ -52,7 +54,10 @@ class Slider extends Component {
 		if ( typeof text === 'number' ) {
 			return Math.min( Math.max( text, minimumValue ), maximumValue );
 		}
-		return Math.min( Math.max( text.replace( /[^0-9]/g, '' ).replace( /^0+(?=\d)/, '' ), minimumValue ), maximumValue );
+		return Math.min(
+			Math.max( text.replace( /[^0-9]/g, '' ).replace( /^0+(?=\d)/, '' ), minimumValue ),
+			maximumValue
+		);
 	}
 
 	handleChange( text ) {

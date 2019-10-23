@@ -21,12 +21,7 @@ import createSelector from 'rememo';
 /**
  * WordPress dependencies
  */
-import {
-	getBlockType,
-	getBlockTypes,
-	hasBlockSupport,
-	parse,
-} from '@wordpress/blocks';
+import { getBlockType, getBlockTypes, hasBlockSupport, parse } from '@wordpress/blocks';
 import { SVG, Rect, G, Path } from '@wordpress/components';
 
 // Module constants
@@ -54,7 +49,14 @@ export const INSERTER_UTILITY_NONE = 0;
 const MILLISECONDS_PER_HOUR = 3600 * 1000;
 const MILLISECONDS_PER_DAY = 24 * 3600 * 1000;
 const MILLISECONDS_PER_WEEK = 7 * 24 * 3600 * 1000;
-const templateIcon = <SVG xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><Rect x="0" fill="none" width="24" height="24" /><G><Path d="M19 3H5c-1.105 0-2 .895-2 2v14c0 1.105.895 2 2 2h14c1.105 0 2-.895 2-2V5c0-1.105-.895-2-2-2zM6 6h5v5H6V6zm4.5 13C9.12 19 8 17.88 8 16.5S9.12 14 10.5 14s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5zm3-6l3-5 3 5h-6z" /></G></SVG>;
+const templateIcon = (
+	<SVG xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+		<Rect x="0" fill="none" width="24" height="24" />
+		<G>
+			<Path d="M19 3H5c-1.105 0-2 .895-2 2v14c0 1.105.895 2 2 2h14c1.105 0 2-.895 2-2V5c0-1.105-.895-2-2-2zM6 6h5v5H6V6zm4.5 13C9.12 19 8 17.88 8 16.5S9.12 14 10.5 14s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5zm3-6l3-5 3 5h-6z" />
+		</G>
+	</SVG>
+);
 
 /**
  * Shared reference to an empty array for cases where it is important to avoid
@@ -178,16 +180,9 @@ export const __unstableGetBlockWithoutInnerBlocks = createSelector(
  */
 export const getBlocks = createSelector(
 	( state, rootClientId ) => {
-		return map(
-			getBlockOrder( state, rootClientId ),
-			( clientId ) => getBlock( state, clientId )
-		);
+		return map( getBlockOrder( state, rootClientId ), ( clientId ) => getBlock( state, clientId ) );
 	},
-	( state ) => [
-		state.blocks.byClientId,
-		state.blocks.order,
-		state.blocks.attributes,
-	]
+	( state ) => [ state.blocks.byClientId, state.blocks.order, state.blocks.attributes ]
 );
 
 /**
@@ -199,10 +194,11 @@ export const getBlocks = createSelector(
  *
  * @return {Array} ids of descendants.
  */
-export const getClientIdsOfDescendants = ( state, clientIds ) => flatMap( clientIds, ( clientId ) => {
-	const descendants = getBlockOrder( state, clientId );
-	return [ ...descendants, ...getClientIdsOfDescendants( state, descendants ) ];
-} );
+export const getClientIdsOfDescendants = ( state, clientIds ) =>
+	flatMap( clientIds, ( clientId ) => {
+		const descendants = getBlockOrder( state, clientId );
+		return [ ...descendants, ...getClientIdsOfDescendants( state, descendants ) ];
+	} );
 
 /**
  * Returns an array containing the clientIds of the top-level blocks
@@ -217,9 +213,7 @@ export const getClientIdsWithDescendants = createSelector(
 		const topLevelIds = getBlockOrder( state );
 		return [ ...topLevelIds, ...getClientIdsOfDescendants( state, topLevelIds ) ];
 	},
-	( state ) => [
-		state.blocks.order,
-	]
+	( state ) => [ state.blocks.order ]
 );
 
 /**
@@ -237,15 +231,16 @@ export const getGlobalBlockCount = createSelector(
 		if ( ! blockName ) {
 			return clientIds.length;
 		}
-		return reduce( clientIds, ( accumulator, clientId ) => {
-			const block = state.blocks.byClientId[ clientId ];
-			return block.name === blockName ? accumulator + 1 : accumulator;
-		}, 0 );
+		return reduce(
+			clientIds,
+			( accumulator, clientId ) => {
+				const block = state.blocks.byClientId[ clientId ];
+				return block.name === blockName ? accumulator + 1 : accumulator;
+			},
+			0
+		);
 	},
-	( state ) => [
-		state.blocks.order,
-		state.blocks.byClientId,
-	]
+	( state ) => [ state.blocks.order, state.blocks.byClientId ]
 );
 
 /**
@@ -258,15 +253,9 @@ export const getGlobalBlockCount = createSelector(
  * @return {WPBlock[]} Block objects.
  */
 export const getBlocksByClientId = createSelector(
-	( state, clientIds ) => map(
-		castArray( clientIds ),
-		( clientId ) => getBlock( state, clientId )
-	),
-	( state ) => [
-		state.blocks.byClientId,
-		state.blocks.order,
-		state.blocks.attributes,
-	]
+	( state, clientIds ) =>
+		map( castArray( clientIds ), ( clientId ) => getBlock( state, clientId ) ),
+	( state ) => [ state.blocks.byClientId, state.blocks.order, state.blocks.attributes ]
 );
 
 /**
@@ -365,10 +354,7 @@ export function getSelectedBlockCount( state ) {
  */
 export function hasSelectedBlock( state ) {
 	const { selectionStart, selectionEnd } = state;
-	return (
-		!! selectionStart.clientId &&
-		selectionStart.clientId === selectionEnd.clientId
-	);
+	return !! selectionStart.clientId && selectionStart.clientId === selectionEnd.clientId;
 }
 
 /**
@@ -413,9 +399,7 @@ export function getSelectedBlock( state ) {
  * @return {?string} Root client ID, if exists
  */
 export function getBlockRootClientId( state, clientId ) {
-	return state.blocks.parents[ clientId ] !== undefined ?
-		state.blocks.parents[ clientId ] :
-		null;
+	return state.blocks.parents[ clientId ] !== undefined ? state.blocks.parents[ clientId ] : null;
 }
 
 /**
@@ -480,7 +464,7 @@ export function getAdjacentBlockClientId( state, startClientId, modifier = 1 ) {
 	const { order } = state.blocks;
 	const orderSet = order[ rootClientId ];
 	const index = orderSet.indexOf( startClientId );
-	const nextIndex = ( index + ( 1 * modifier ) );
+	const nextIndex = index + 1 * modifier;
 
 	// Block was first in set and we're attempting to get previous.
 	if ( nextIndex < 0 ) {
@@ -549,10 +533,7 @@ export const getSelectedBlockClientIds = createSelector(
 	( state ) => {
 		const { selectionStart, selectionEnd } = state;
 
-		if (
-			selectionStart.clientId === undefined ||
-			selectionEnd.clientId === undefined
-		) {
+		if ( selectionStart.clientId === undefined || selectionEnd.clientId === undefined ) {
 			return EMPTY_ARRAY;
 		}
 
@@ -578,11 +559,7 @@ export const getSelectedBlockClientIds = createSelector(
 
 		return blockOrder.slice( startIndex, endIndex + 1 );
 	},
-	( state ) => [
-		state.blocks.order,
-		state.selectionStart.clientId,
-		state.selectionEnd.clientId,
-	],
+	( state ) => [ state.blocks.order, state.selectionStart.clientId, state.selectionEnd.clientId ]
 );
 
 /**
@@ -699,11 +676,7 @@ export const isAncestorMultiSelected = createSelector(
 		}
 		return isMultiSelected;
 	},
-	( state ) => [
-		state.blocks.order,
-		state.selectionStart.clientId,
-		state.selectionEnd.clientId,
-	],
+	( state ) => [ state.blocks.order, state.selectionStart.clientId, state.selectionEnd.clientId ]
 );
 /**
  * Returns the client ID of the block which begins the multi-selection set, or
@@ -808,11 +781,10 @@ export function isBlockSelected( state, clientId ) {
 export function hasSelectedInnerBlock( state, clientId, deep = false ) {
 	return some(
 		getBlockOrder( state, clientId ),
-		( innerClientId ) => (
+		( innerClientId ) =>
 			isBlockSelected( state, innerClientId ) ||
 			isBlockMultiSelected( state, innerClientId ) ||
 			( deep && hasSelectedInnerBlock( state, innerClientId, deep ) )
-		)
 	);
 }
 
@@ -1066,7 +1038,7 @@ export const canInsertBlockType = createSelector(
 		state.blocks.byClientId[ rootClientId ],
 		state.settings.allowedBlockTypes,
 		state.settings.templateLock,
-	],
+	]
 );
 
 /**
@@ -1177,7 +1149,9 @@ export const getInserterItems = createSelector(
 
 			let isDisabled = false;
 			if ( ! hasBlockSupport( blockType.name, 'multiple', true ) ) {
-				isDisabled = some( getBlocksByClientId( state, getClientIdsWithDescendants( state ) ), { name: blockType.name } );
+				isDisabled = some( getBlocksByClientId( state, getClientIdsWithDescendants( state ) ), {
+					name: blockType.name,
+				} );
 			}
 
 			const isContextual = isArray( blockType.parent );
@@ -1228,9 +1202,13 @@ export const getInserterItems = createSelector(
 			.filter( ( blockType ) => canIncludeBlockTypeInInserter( state, blockType, rootClientId ) )
 			.map( buildBlockTypeInserterItem );
 
-		const reusableBlockInserterItems = canInsertBlockTypeUnmemoized( state, 'core/block', rootClientId ) ?
-			getReusableBlocks( state ).map( buildReusableBlockInserterItem ) :
-			[];
+		const reusableBlockInserterItems = canInsertBlockTypeUnmemoized(
+			state,
+			'core/block',
+			rootClientId
+		)
+			? getReusableBlocks( state ).map( buildReusableBlockInserterItem )
+			: [];
 
 		return orderBy(
 			[ ...blockTypeInserterItems, ...reusableBlockInserterItems ],
@@ -1247,7 +1225,7 @@ export const getInserterItems = createSelector(
 		state.settings.templateLock,
 		getReusableBlocks( state ),
 		getBlockTypes(),
-	],
+	]
 );
 
 /**
@@ -1260,17 +1238,15 @@ export const getInserterItems = createSelector(
  */
 export const hasInserterItems = createSelector(
 	( state, rootClientId = null ) => {
-		const hasBlockType = some(
-			getBlockTypes(),
-			( blockType ) => canIncludeBlockTypeInInserter( state, blockType, rootClientId )
+		const hasBlockType = some( getBlockTypes(), ( blockType ) =>
+			canIncludeBlockTypeInInserter( state, blockType, rootClientId )
 		);
 		if ( hasBlockType ) {
 			return true;
 		}
-		const hasReusableBlock = (
+		const hasReusableBlock =
 			canInsertBlockTypeUnmemoized( state, 'core/block', rootClientId ) &&
-			getReusableBlocks( state ).length > 0
-		);
+			getReusableBlocks( state ).length > 0;
 
 		return hasReusableBlock;
 	},
@@ -1281,7 +1257,7 @@ export const hasInserterItems = createSelector(
 		state.settings.templateLock,
 		getReusableBlocks( state ),
 		getBlockTypes(),
-	],
+	]
 );
 
 /**
@@ -1330,19 +1306,14 @@ export function isLastBlockChangePersistent( state ) {
  */
 export const __experimentalGetParsedReusableBlock = createSelector(
 	( state, ref ) => {
-		const reusableBlock = find(
-			getReusableBlocks( state ),
-			( block ) => block.id === ref
-		);
+		const reusableBlock = find( getReusableBlocks( state ), ( block ) => block.id === ref );
 		if ( ! reusableBlock ) {
 			return null;
 		}
 
 		return parse( reusableBlock.content );
 	},
-	( state ) => [
-		getReusableBlocks( state ),
-	],
+	( state ) => [ getReusableBlocks( state ) ]
 );
 
 /**

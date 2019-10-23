@@ -25,13 +25,27 @@ const DEFAULT_FEATURE_IMAGE_LABEL = __( 'Featured Image' );
 const DEFAULT_SET_FEATURE_IMAGE_LABEL = __( 'Set Featured Image' );
 const DEFAULT_REMOVE_FEATURE_IMAGE_LABEL = __( 'Remove Image' );
 
-function PostFeaturedImage( { currentPostId, featuredImageId, onUpdateImage, onRemoveImage, media, postType } ) {
+function PostFeaturedImage( {
+	currentPostId,
+	featuredImageId,
+	onUpdateImage,
+	onRemoveImage,
+	media,
+	postType,
+} ) {
 	const postLabel = get( postType, [ 'labels' ], {} );
-	const instructions = <p>{ __( 'To edit the featured image, you need permission to upload media.' ) }</p>;
+	const instructions = (
+		<p>{ __( 'To edit the featured image, you need permission to upload media.' ) }</p>
+	);
 
 	let mediaWidth, mediaHeight, mediaSourceUrl;
 	if ( media ) {
-		const mediaSize = applyFilters( 'editor.PostFeaturedImage.imageSize', 'post-thumbnail', media.id, currentPostId );
+		const mediaSize = applyFilters(
+			'editor.PostFeaturedImage.imageSize',
+			'post-thumbnail',
+			media.id,
+			currentPostId
+		);
 		if ( has( media, [ 'media_details', 'sizes', mediaSize ] ) ) {
 			mediaWidth = media.media_details.sizes[ mediaSize ].width;
 			mediaHeight = media.media_details.sizes[ mediaSize ].height;
@@ -52,13 +66,22 @@ function PostFeaturedImage( { currentPostId, featuredImageId, onUpdateImage, onR
 						onSelect={ onUpdateImage }
 						unstableFeaturedImageFlow
 						allowedTypes={ ALLOWED_MEDIA_TYPES }
-						modalClass={ ! featuredImageId ? 'editor-post-featured-image__media-modal' : 'editor-post-featured-image__media-modal' }
+						modalClass={
+							! featuredImageId
+								? 'editor-post-featured-image__media-modal'
+								: 'editor-post-featured-image__media-modal'
+						}
 						render={ ( { open } ) => (
 							<Button
-								className={ ! featuredImageId ? 'editor-post-featured-image__toggle' : 'editor-post-featured-image__preview' }
+								className={
+									! featuredImageId
+										? 'editor-post-featured-image__toggle'
+										: 'editor-post-featured-image__preview'
+								}
 								onClick={ open }
-								aria-label={ ! featuredImageId ? null : __( 'Edit or update the image' ) }>
-								{ !! featuredImageId && media &&
+								aria-label={ ! featuredImageId ? null : __( 'Edit or update the image' ) }
+							>
+								{ !! featuredImageId && media && (
 									<ResponsiveWrapper
 										naturalWidth={ mediaWidth }
 										naturalHeight={ mediaHeight }
@@ -66,15 +89,16 @@ function PostFeaturedImage( { currentPostId, featuredImageId, onUpdateImage, onR
 									>
 										<img src={ mediaSourceUrl } alt="" />
 									</ResponsiveWrapper>
-								}
+								) }
 								{ !! featuredImageId && ! media && <Spinner /> }
-								{ ! featuredImageId && ( postLabel.set_featured_image || DEFAULT_SET_FEATURE_IMAGE_LABEL ) }
+								{ ! featuredImageId &&
+									( postLabel.set_featured_image || DEFAULT_SET_FEATURE_IMAGE_LABEL ) }
 							</Button>
 						) }
 						value={ featuredImageId }
 					/>
 				</MediaUploadCheck>
-				{ !! featuredImageId && media && ! media.isLoading &&
+				{ !! featuredImageId && media && ! media.isLoading && (
 					<MediaUploadCheck>
 						<MediaUpload
 							title={ postLabel.featured_image || DEFAULT_FEATURE_IMAGE_LABEL }
@@ -89,14 +113,14 @@ function PostFeaturedImage( { currentPostId, featuredImageId, onUpdateImage, onR
 							) }
 						/>
 					</MediaUploadCheck>
-				}
-				{ !! featuredImageId &&
+				) }
+				{ !! featuredImageId && (
 					<MediaUploadCheck>
 						<Button onClick={ onRemoveImage } isLink isDestructive>
 							{ postLabel.remove_featured_image || DEFAULT_REMOVE_FEATURE_IMAGE_LABEL }
 						</Button>
 					</MediaUploadCheck>
-				}
+				) }
 			</div>
 		</PostFeaturedImageCheck>
 	);
@@ -130,5 +154,5 @@ const applyWithDispatch = withDispatch( ( dispatch ) => {
 export default compose(
 	applyWithSelect,
 	applyWithDispatch,
-	withFilters( 'editor.PostFeaturedImage' ),
+	withFilters( 'editor.PostFeaturedImage' )
 )( PostFeaturedImage );

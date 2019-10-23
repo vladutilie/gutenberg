@@ -2,15 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import {
-	find,
-	get,
-	isEmpty,
-	map,
-	last,
-	omit,
-	pick,
-} from 'lodash';
+import { find, get, isEmpty, map, last, omit, pick } from 'lodash';
 
 /**
  * WordPress dependencies
@@ -37,14 +29,7 @@ import {
 	withNotices,
 } from '@wordpress/components';
 import { compose } from '@wordpress/compose';
-import {
-	LEFT,
-	RIGHT,
-	UP,
-	DOWN,
-	BACKSPACE,
-	ENTER,
-} from '@wordpress/keycodes';
+import { LEFT, RIGHT, UP, DOWN, BACKSPACE, ENTER } from '@wordpress/keycodes';
 import { withSelect, withDispatch } from '@wordpress/data';
 import {
 	BlockAlignmentToolbar,
@@ -55,12 +40,7 @@ import {
 	URLPopover,
 	RichText,
 } from '@wordpress/block-editor';
-import {
-	Component,
-	useCallback,
-	useState,
-	useRef,
-} from '@wordpress/element';
+import { Component, useCallback, useState, useRef } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import { getPath } from '@wordpress/url';
 import { withViewportMatch } from '@wordpress/viewport';
@@ -89,7 +69,10 @@ import {
 
 export const pickRelevantMediaFiles = ( image ) => {
 	const imageProps = pick( image, [ 'alt', 'id', 'link', 'caption' ] );
-	imageProps.url = get( image, [ 'sizes', 'large', 'url' ] ) || get( image, [ 'media_details', 'sizes', 'large', 'source_url' ] ) || image.url;
+	imageProps.url =
+		get( image, [ 'sizes', 'large', 'url' ] ) ||
+		get( image, [ 'media_details', 'sizes', 'large', 'source_url' ] ) ||
+		image.url;
 	return imageProps;
 };
 
@@ -126,13 +109,7 @@ const stopPropagationRelevantKeys = ( event ) => {
 	}
 };
 
-const ImageURLInputUI = ( {
-	advancedOptions,
-	linkDestination,
-	mediaLinks,
-	onChangeUrl,
-	url,
-} ) => {
+const ImageURLInputUI = ( { advancedOptions, linkDestination, mediaLinks, onChangeUrl, url } ) => {
 	const [ isOpen, setIsOpen ] = useState( false );
 	const openLinkUI = useCallback( () => {
 		setIsOpen( true );
@@ -142,7 +119,8 @@ const ImageURLInputUI = ( {
 	const [ urlInput, setUrlInput ] = useState( null );
 
 	const startEditLink = useCallback( () => {
-		if ( linkDestination === LINK_DESTINATION_MEDIA ||
+		if (
+			linkDestination === LINK_DESTINATION_MEDIA ||
 			linkDestination === LINK_DESTINATION_ATTACHMENT
 		) {
 			setUrlInput( '' );
@@ -194,9 +172,7 @@ const ImageURLInputUI = ( {
 	} );
 	const linkEditorValue = urlInput !== null ? urlInput : url;
 
-	const urlLabel = (
-		find( mediaLinks, [ 'linkDestination', linkDestination ] ) || {}
-	).title;
+	const urlLabel = ( find( mediaLinks, [ 'linkDestination', linkDestination ] ) || {} ).title;
 	return (
 		<>
 			<IconButton
@@ -211,10 +187,10 @@ const ImageURLInputUI = ( {
 					onClickOutside={ onClickOutside() }
 					onClose={ closeLinkUI }
 					renderSettings={ () => advancedOptions }
-					additionalControls={ ! linkEditorValue && (
-						<NavigableMenu>
-							{
-								map( mediaLinks, ( link ) => (
+					additionalControls={
+						! linkEditorValue && (
+							<NavigableMenu>
+								{ map( mediaLinks, ( link ) => (
 									<MenuItem
 										key={ link.linkDestination }
 										icon={ link.icon }
@@ -226,10 +202,10 @@ const ImageURLInputUI = ( {
 									>
 										{ link.title }
 									</MenuItem>
-								) )
-							}
-						</NavigableMenu>
-					) }
+								) ) }
+							</NavigableMenu>
+						)
+					}
 				>
 					{ ( ! url || isEditingLink ) && (
 						<URLPopover.LinkEditor
@@ -242,7 +218,7 @@ const ImageURLInputUI = ( {
 							autocompleteRef={ autocompleteRef }
 						/>
 					) }
-					{ ( url && ! isEditingLink ) && (
+					{ url && ! isEditingLink && (
 						<>
 							<URLPopover.LinkViewer
 								className="editor-format-toolbar__link-container-content block-editor-format-toolbar__link-container-content"
@@ -251,11 +227,7 @@ const ImageURLInputUI = ( {
 								onEditLinkClick={ startEditLink }
 								urlLabel={ urlLabel }
 							/>
-							<IconButton
-								icon="no"
-								label={ __( 'Remove link' ) }
-								onClick={ onLinkRemove }
-							/>
+							<IconButton icon="no" label={ __( 'Remove link' ) } onClick={ onLinkRemove } />
 						</>
 					) }
 				</URLPopover>
@@ -294,11 +266,7 @@ export class ImageEdit extends Component {
 	}
 
 	componentDidMount() {
-		const {
-			attributes,
-			mediaUpload,
-			noticeOperations,
-		} = this.props;
+		const { attributes, mediaUpload, noticeOperations } = this.props;
 		const { id, url = '' } = attributes;
 
 		if ( isTemporaryImage( id, url ) ) {
@@ -411,9 +379,7 @@ export class ImageEdit extends Component {
 
 	onImageError( url ) {
 		// Check if there's an embed block that handles this URL.
-		const embedBlock = createUpgradedEmbedBlock(
-			{ attributes: { url } }
-		);
+		const embedBlock = createUpgradedEmbedBlock( { attributes: { url } } );
 		if ( undefined !== embedBlock ) {
 			this.props.onReplace( embedBlock );
 		}
@@ -430,8 +396,7 @@ export class ImageEdit extends Component {
 			linkDestinationInput = (
 				find( linkDestinations, ( destination ) => {
 					return destination.url === value;
-				} ) ||
-				{ linkDestination: LINK_DESTINATION_CUSTOM }
+				} ) || { linkDestination: LINK_DESTINATION_CUSTOM }
 			).linkDestination;
 		}
 		if ( linkDestination !== linkDestinationInput ) {
@@ -478,9 +443,8 @@ export class ImageEdit extends Component {
 	}
 
 	updateAlignment( nextAlign ) {
-		const extraUpdatedAttributes = [ 'wide', 'full' ].indexOf( nextAlign ) !== -1 ?
-			{ width: undefined, height: undefined } :
-			{};
+		const extraUpdatedAttributes =
+			[ 'wide', 'full' ].indexOf( nextAlign ) !== -1 ? { width: undefined, height: undefined } : {};
 		this.props.setAttributes( { ...extraUpdatedAttributes, align: nextAlign } );
 	}
 
@@ -526,15 +490,19 @@ export class ImageEdit extends Component {
 			{
 				linkDestination: LINK_DESTINATION_MEDIA,
 				title: __( 'Media File' ),
-				url: ( this.props.image && this.props.image.source_url ) ||
-					this.props.attributes.url,
+				url: ( this.props.image && this.props.image.source_url ) || this.props.attributes.url,
 				icon,
 			},
 			{
 				linkDestination: LINK_DESTINATION_ATTACHMENT,
 				title: __( 'Attachment Page' ),
 				url: this.props.image && this.props.image.link,
-				icon: <SVG viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><Path d="M0 0h24v24H0V0z" fill="none" /><Path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zM6 20V4h7v5h5v11H6z" /></SVG>,
+				icon: (
+					<SVG viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+						<Path d="M0 0h24v24H0V0z" fill="none" />
+						<Path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zM6 20V4h7v5h5v11H6z" />
+					</SVG>
+				),
 			},
 		];
 	}
@@ -587,18 +555,24 @@ export class ImageEdit extends Component {
 
 		const cleanRel = removeNewTabRel( rel );
 		const isExternal = isExternalImage( id, url );
-		const editImageIcon = ( <SVG width={ 20 } height={ 20 } viewBox="0 0 20 20"><Rect x={ 11 } y={ 3 } width={ 7 } height={ 5 } rx={ 1 } /><Rect x={ 2 } y={ 12 } width={ 7 } height={ 5 } rx={ 1 } /><Path d="M13,12h1a3,3,0,0,1-3,3v2a5,5,0,0,0,5-5h1L15,9Z" /><Path d="M4,8H3l2,3L7,8H6A3,3,0,0,1,9,5V3A5,5,0,0,0,4,8Z" /></SVG> );
+		const editImageIcon = (
+			<SVG width={ 20 } height={ 20 } viewBox="0 0 20 20">
+				<Rect x={ 11 } y={ 3 } width={ 7 } height={ 5 } rx={ 1 } />
+				<Rect x={ 2 } y={ 12 } width={ 7 } height={ 5 } rx={ 1 } />
+				<Path d="M13,12h1a3,3,0,0,1-3,3v2a5,5,0,0,0,5-5h1L15,9Z" />
+				<Path d="M4,8H3l2,3L7,8H6A3,3,0,0,1,9,5V3A5,5,0,0,0,4,8Z" />
+			</SVG>
+		);
 		const controls = (
 			<BlockControls>
-				<BlockAlignmentToolbar
-					value={ align }
-					onChange={ this.updateAlignment }
-				/>
+				<BlockAlignmentToolbar value={ align } onChange={ this.updateAlignment } />
 				{ url && (
 					<>
 						<Toolbar>
 							<IconButton
-								className={ classnames( 'components-icon-button components-toolbar__control', { 'is-active': this.state.isEditing } ) }
+								className={ classnames( 'components-icon-button components-toolbar__control', {
+									'is-active': this.state.isEditing,
+								} ) }
 								label={ __( 'Edit image' ) }
 								aria-pressed={ this.state.isEditing }
 								onClick={ this.toggleIsEditing }
@@ -616,7 +590,8 @@ export class ImageEdit extends Component {
 										<ToggleControl
 											label={ __( 'Open in New Tab' ) }
 											onChange={ this.onSetNewTab }
-											checked={ linkTarget === '_blank' } />
+											checked={ linkTarget === '_blank' }
+										/>
 										<TextControl
 											label={ __( 'Link Rel' ) }
 											value={ cleanRel || '' }
@@ -642,14 +617,18 @@ export class ImageEdit extends Component {
 		const src = isExternal ? url : undefined;
 		const labels = {
 			title: ! url ? __( 'Image' ) : __( 'Edit image' ),
-			instructions: __( 'Upload an image file, pick one from your media library, or add one with a URL.' ),
+			instructions: __(
+				'Upload an image file, pick one from your media library, or add one with a URL.'
+			),
 		};
-		const mediaPreview = ( !! url && <img
-			alt={ __( 'Edit image' ) }
-			title={ __( 'Edit image' ) }
-			className={ 'edit-image-preview' }
-			src={ url }
-		/> );
+		const mediaPreview = !! url && (
+			<img
+				alt={ __( 'Edit image' ) }
+				title={ __( 'Edit image' ) }
+				className={ 'edit-image-preview' }
+				src={ url }
+			/>
+		);
 		const mediaPlaceholder = (
 			<MediaPlaceholder
 				icon={ <BlockIcon icon={ icon } /> }
@@ -714,9 +693,7 @@ export class ImageEdit extends Component {
 					) }
 					{ isResizable && (
 						<div className="block-library-image__dimensions">
-							<p className="block-library-image__dimensions__row">
-								{ __( 'Image Dimensions' ) }
-							</p>
+							<p className="block-library-image__dimensions__row">{ __( 'Image Dimensions' ) }</p>
 							<div className="block-library-image__dimensions__row">
 								<TextControl
 									type="number"
@@ -756,10 +733,7 @@ export class ImageEdit extends Component {
 										);
 									} ) }
 								</ButtonGroup>
-								<Button
-									isSmall
-									onClick={ this.updateDimensions() }
-								>
+								<Button isSmall onClick={ this.updateDimensions() }>
 									{ __( 'Reset' ) }
 								</Button>
 							</div>
@@ -789,7 +763,10 @@ export class ImageEdit extends Component {
 							if ( alt ) {
 								defaultedAlt = alt;
 							} else if ( filename ) {
-								defaultedAlt = sprintf( __( 'This image has an empty alt attribute; its file name is %s' ), filename );
+								defaultedAlt = sprintf(
+									__( 'This image has an empty alt attribute; its file name is %s' ),
+									filename
+								);
 							} else {
 								defaultedAlt = __( 'This image has an empty alt attribute' );
 							}
@@ -815,9 +792,7 @@ export class ImageEdit extends Component {
 								return (
 									<>
 										{ getInspectorControls( imageWidth, imageHeight ) }
-										<div style={ { width, height } }>
-											{ img }
-										</div>
+										<div style={ { width, height } }>{ img }</div>
 									</>
 								);
 							}
@@ -930,13 +905,11 @@ export default compose( [
 	withSelect( ( select, props ) => {
 		const { getMedia } = select( 'core' );
 		const { getSettings } = select( 'core/block-editor' );
-		const { attributes: { id }, isSelected } = props;
 		const {
-			__experimentalMediaUpload,
-			imageSizes,
-			isRTL,
-			maxWidth,
-		} = getSettings();
+			attributes: { id },
+			isSelected,
+		} = props;
+		const { __experimentalMediaUpload, imageSizes, isRTL, maxWidth } = getSettings();
 
 		return {
 			image: id && isSelected ? getMedia( id ) : null,
