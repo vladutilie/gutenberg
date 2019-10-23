@@ -34,6 +34,7 @@ function render_block_navigation_menu( $attributes, $content, $block ) {
  * @return array Menu items
  */
 function setup_block_nav_items( $block ) {
+	static $menu_item_id = 1;
 	$nav_menu_items = array();
 	$nav_menu_item  = array(
 		'post_type' => 'nav_menu_item',
@@ -42,11 +43,18 @@ function setup_block_nav_items( $block ) {
 		'current' => false,
 	);
 
-	foreach ( $block['innerBlocks'] as $index => $inner_block ) {
-		$nav_menu_item['ID']         = $index;
-		$nav_menu_item['post_title'] = $inner_block['attrs']['label'];
-		$nav_menu_item['url']        = $inner_block['attrs']['destination'];
+	foreach ( $block['innerBlocks'] as $inner_block ) {
+		$sub_menu_items = setup_block_nav_items( $inner_block );
+		foreach ( $sub_menu_items as $sub_menu_item ) {
+			$sub_menu_item->menu_item_parent = $menu_item_id;
+			$nav_menu_items[]                = $sub_menu_item;
+		}
 
+		$nav_menu_item['ID']         = $menu_item_id;
+		$nav_menu_item['post_title'] = $inner_block['attrs']['label'];
+		$nav_menu_item['url']        = $inner_block['attrs']['destination'] ?? '#';
+
+		++$menu_item_id;
 		$nav_menu_items[] = (object) $nav_menu_item;
 	}
 
