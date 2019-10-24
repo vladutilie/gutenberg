@@ -477,6 +477,194 @@ exports[`@wordpress/components ColorIndicator Default 1`] = `
 />
 `;
 
+exports[`@wordpress/components ColorPalette Default 1`] = `
+<div
+  className="components-circular-option-picker"
+>
+  <div
+    className="components-circular-option-picker__option-wrapper"
+  >
+    <button
+      aria-label="Color: red"
+      aria-pressed={false}
+      className="components-circular-option-picker__option"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={
+        Object {
+          "color": "#f00",
+        }
+      }
+      type="button"
+    />
+  </div>
+  <div
+    className="components-circular-option-picker__option-wrapper"
+  >
+    <button
+      aria-label="Color: white"
+      aria-pressed={false}
+      className="components-circular-option-picker__option"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={
+        Object {
+          "color": "#fff",
+        }
+      }
+      type="button"
+    />
+  </div>
+  <div
+    className="components-circular-option-picker__option-wrapper"
+  >
+    <button
+      aria-label="Color: blue"
+      aria-pressed={false}
+      className="components-circular-option-picker__option"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={
+        Object {
+          "color": "#00f",
+        }
+      }
+      type="button"
+    />
+  </div>
+  <div
+    className="components-circular-option-picker__custom-clear-wrapper"
+  >
+    <div
+      className="components-circular-option-picker__dropdown-link-action"
+    >
+      <button
+        aria-expanded={false}
+        aria-label="Custom color picker"
+        className="components-button is-link"
+        onClick={[Function]}
+        type="button"
+      >
+        Custom Color
+      </button>
+    </div>
+    <button
+      className="components-button components-circular-option-picker__clear is-button is-default is-small"
+      onClick={[Function]}
+      type="button"
+    >
+      Clear
+    </button>
+  </div>
+</div>
+`;
+
+exports[`@wordpress/components ColorPalette With Knobs 1`] = `
+<div
+  className="components-circular-option-picker"
+>
+  <div
+    className="components-circular-option-picker__option-wrapper"
+  >
+    <button
+      aria-label="Color: red"
+      aria-pressed={false}
+      className="components-circular-option-picker__option"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={
+        Object {
+          "color": "#f00",
+        }
+      }
+      type="button"
+    />
+  </div>
+  <div
+    className="components-circular-option-picker__option-wrapper"
+  >
+    <button
+      aria-label="Color: white"
+      aria-pressed={false}
+      className="components-circular-option-picker__option"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={
+        Object {
+          "color": "#fff",
+        }
+      }
+      type="button"
+    />
+  </div>
+  <div
+    className="components-circular-option-picker__option-wrapper"
+  >
+    <button
+      aria-label="Color: blue"
+      aria-pressed={false}
+      className="components-circular-option-picker__option"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={
+        Object {
+          "color": "#00f",
+        }
+      }
+      type="button"
+    />
+  </div>
+  <div
+    className="components-circular-option-picker__custom-clear-wrapper"
+  >
+    <div
+      className="components-circular-option-picker__dropdown-link-action"
+    >
+      <button
+        aria-expanded={false}
+        aria-label="Custom color picker"
+        className="components-button is-link"
+        onClick={[Function]}
+        type="button"
+      >
+        Custom Color
+      </button>
+    </div>
+    <button
+      className="components-button components-circular-option-picker__clear is-button is-default is-small"
+      onClick={[Function]}
+      type="button"
+    >
+      Clear
+    </button>
+  </div>
+</div>
+`;
+
 exports[`@wordpress/components Dashicon Default 1`] = `
 <svg
   aria-hidden="true"
@@ -1133,4 +1321,23 @@ exports[`@wordpress/components ScrollLock Default 1`] = `
     </div>
   </div>
 </div>
+`;
+
+exports[`@wordpress/components VisuallyHidden Default 1`] = `
+Array [
+  <div
+    className="components-visually-hidden"
+  >
+    This should not show.
+  </div>,
+  <div>
+    This text will 
+    <span
+      className="components-visually-hidden"
+    >
+      but not inline 
+    </span>
+     always show.
+  </div>,
+]
 `;
