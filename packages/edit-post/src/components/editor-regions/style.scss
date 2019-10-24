@@ -71,10 +71,16 @@
 	flex-shrink: 0;
 	height: auto;  // Keep the height flexible.
 	border-bottom: $border-width solid $light-gray-500;
+	z-index: z-index(".edit-post-editor-regions__header");
 
 	// On Mobile the header is sticky.
 	position: sticky;
 	top: 0;
+
+	@include break-small() {
+		top: $admin-bar-height-big; // The top bar is fixed on this breakpoint.
+	}
+
 	@include break-medium() {
 		// Cancel the fixed positionning used in mobile.
 		position: initial;
