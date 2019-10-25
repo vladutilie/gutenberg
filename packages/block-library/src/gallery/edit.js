@@ -31,6 +31,7 @@ import { Component } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { getBlobByURL, isBlobURL, revokeBlobURL } from '@wordpress/blob';
 import { withSelect } from '@wordpress/data';
+import { withViewportMatch } from '@wordpress/viewport';
 
 /**
  * Internal dependencies
@@ -346,4 +347,5 @@ export default compose( [
 		};
 	} ),
 	withNotices,
+	withViewportMatch( { isMobile: '< small' } ),
 ] )( GalleryEdit );
