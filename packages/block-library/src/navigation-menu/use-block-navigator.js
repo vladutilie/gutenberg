@@ -68,6 +68,7 @@ export default function useBlockNavigator( clientId ) {
 				blocks={ [ block ] }
 				selectedBlockClientId={ selectedBlockClientId }
 				selectBlock={ selectBlock }
+				showAppender
 				showNestedBlocks
 			/>
 		</Modal>
