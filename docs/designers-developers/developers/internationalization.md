@@ -31,7 +31,7 @@ function myguten_block_init() {
         'editor_script' => 'myguten-script',
     ) );
 }
-add_action( 'init', 'myguten_block_init' );
+add_action( 'wp_enqueue_scripts', 'myguten_block_init' );
 ```
 
 In your code, you can include the i18n functions. The most common function is **__** (a double underscore) which provides translation of a simple string. Here is a basic static block example, this is in a file called `block.js`:
@@ -109,7 +109,7 @@ After all strings in your code is wrapped, the final step is to tell WordPress y
 	function myguten_set_script_translations() {
 		wp_set_script_translations( 'myguten-script', 'myguten' );
 	}
-	add_action( 'init', 'myguten_set_script_translations' );
+	add_action( 'wp_enqueue_scripts', 'myguten_set_script_translations' );
 ```
 
 This is all you need to make your plugin JavaScript code translatable.
@@ -247,7 +247,7 @@ The final part is to tell WordPress where it can look to find the translation fi
 	function myguten_set_script_translations() {
 		wp_set_script_translations( 'myguten-script', 'myguten', plugin_dir_path( __FILE__ ) . 'languages' );
 	}
-	add_action( 'init', 'myguten_set_script_translations' );
+	add_action( 'wp_enqueue_scripts', 'myguten_set_script_translations' );
 ```
 
 WordPress will check for a file in that path with the format `${domain}-${locale}-${handle}.json` as the source of translations. Alternatively, instead of the registered handle you can use the md5 hash of the relative path of the file, `${domain}-${locale} in the form of ${domain}-${locale}-${md5}.json.`
