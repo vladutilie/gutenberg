@@ -8,7 +8,15 @@ import {
 	MediaPlaceholder,
 	MediaUpload,
 } from '@wordpress/block-editor';
-import { Component } from '@wordpress/element';
+import {
+ 	LEFT,
+ 	RIGHT,
+ 	UP,
+ 	DOWN,
+ 	BACKSPACE,
+ 	ENTER,
+ } from '@wordpress/keycodes';
+import { Component, URLPopover, LinkEditor, LinkViewer } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { compose } from '@wordpress/compose';
 import { withDispatch } from '@wordpress/data';
@@ -32,16 +40,78 @@ export function imageFillStyles( url, focalPoint ) {
 		{};
 }
 
+const stopPropagation = ( event ) => {
+	event.stopPropagation();
+};
+
+const stopPropagationRelevantKeys = ( event ) => {
+	if ( [ LEFT, DOWN, RIGHT, UP, BACKSPACE, ENTER ].indexOf( event.keyCode ) > -1 ) {
+		// Stop the key event from propagating up to ObserveTyping.startTypingInTextField.
+		event.stopPropagation();
+	}
+};
+
 class MediaContainer extends Component {
 	constructor() {
 		super( ...arguments );
 		this.onUploadError = this.onUploadError.bind( this );
+		this.state = {
+			showEditURLInput: false,
+			mediaURLValue: false,
+			showMediaLink: false,
+		};
 	}
 
 	onUploadError( message ) {
 		const { noticeOperations } = this.props;
 		noticeOperations.removeAllNotices();
 		noticeOperations.createErrorNotice( message );
+	}
+	
+	renderToolbarLinkButton() {
+		return (
+			<>
+				<IconButton
+					icon="admin-links"
+					className="components-toolbar__control"
+					label={ url ? __( 'Edit link' ) : __( 'Insert link' ) }
+					aria-expanded={ isOpen }
+					onClick={ this.setState( { showMediaLink: ! showMediaLink } ) }
+				/>
+				{ this.showMediaLink &&
+					<Popover>
+						{ renderLinkEdit() }
+					</Popover>
+				}
+			</>
+		);	
+	}
+	
+	renderLinkEdit() {
+		let urlInputUIContent;
+	 	if ( showEditURLInput ) {
+	 		urlInputUIContent = ( <LinkEditor
+	 			onKeyDown={ this.stopPropagationRelevantKeys }
+	 			onKeyPress={ this.stopPropagation }
+	 			value={ this.state.mediaURLValue }
+	 			isFullWidthInput={ true }
+	 			hasInputBorder={ true }
+	 			onChangeInputValue={ ( mediaURLValue ) => ( this.setState( { mediaURLValue } ) ) }
+	 			onSubmit={ ( event ) => {
+	 				event.preventDefault();
+	 				onSelectURL( this.state.mediaURLValue );
+	 				this.setState( { showEditURLInput: ! showEditURLInput } );
+	 			} }
+	 		/> );
+	 	} else {
+	 		urlInputUIContent = ( <LinkViewer
+	 			isFullWidth={ true }
+	 			className="editor-format-toolbar__link-container-content block-editor-format-toolbar__link-container-content"
+	 			url={ mediaURLValue }
+	 			onEditLinkClick={ () => ( this.setState( { showEditURLInput: ! showEditURLInput } ) ) }
+	 		/> );
+	 	}
+
 	}
 
 	renderToolbarEditButton() {
@@ -72,7 +142,6 @@ class MediaContainer extends Component {
 		const backgroundStyles = imageFill ? imageFillStyles( mediaUrl, focalPoint ) : {};
 		return (
 			<>
-				{ this.renderToolbarEditButton() }
 				<figure className={ className } style={ backgroundStyles }>
 					<img src={ mediaUrl } alt={ mediaAlt } />
 				</figure>
@@ -138,19 +207,25 @@ class MediaContainer extends Component {
 					break;
 			}
 			return (
-				<ResizableBox
-					className="editor-media-container__resizer"
-					size={ { width: mediaWidth + '%' } }
-					minWidth="10%"
-					maxWidth="100%"
-					enable={ enablePositions }
-					onResizeStart={ onResizeStart }
-					onResize={ onResize }
-					onResizeStop={ onResizeStop }
-					axis="x"
-				>
-					{ mediaElement }
-				</ResizableBox>
+				<>
+					<BlockControls>
+						{ this.renderToolbarEditButton() }
+					</BlockControls>
+	
+					<ResizableBox
+						className="editor-media-container__resizer"
+						size={ { width: mediaWidth + '%' } }
+						minWidth="10%"
+						maxWidth="100%"
+						enable={ enablePositions }
+						onResizeStart={ onResizeStart }
+						onResize={ onResize }
+						onResizeStop={ onResizeStop }
+						axis="x"
+					>
+						{ mediaElement }
+					</ResizableBox>
+				</>
 			);
 		}
 		return this.renderPlaceholder();
